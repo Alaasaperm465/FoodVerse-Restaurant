@@ -190,6 +190,87 @@
         z-index: 2;
     }
 
+    .special-offers-section {
+        background: linear-gradient(135deg, #b31217 0%, #e52d27 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .special-offers-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 150%;
+            background: radial-gradient(circle at center, rgba(255, 193, 7, 0.1), transparent 70%);
+            animation: glow 6s infinite alternate;
+        }
+
+    .offer-image-container {
+        position: relative;
+        text-align: center;
+    }
+
+    .offer-image {
+        width: 100%;
+        border-radius: 20px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+        .offer-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 193, 7, 0.3);
+        }
+
+    .offer-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 193, 7, 0.9);
+        color: #212529;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .offer-content h2 {
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .offer-item {
+        border-left: 4px solid #ffc107;
+        padding-left: 15px;
+        transition: all 0.3s ease;
+    }
+
+        .offer-item:hover {
+            transform: translateX(5px);
+        }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107, #ff8c00);
+        border: none;
+        color: #212529;
+        transition: all 0.3s ease;
+    }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #ffca2c, #ff9f1a);
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-light:hover {
+        background: #fff;
+        color: #000;
+    }
+
     /* Responsive adjustments */
     @@media (max-width: 768px) {
         .hero-title {
@@ -225,15 +306,7 @@
 <!-- Menu Section -->
 <div class="container" id="menu">
     <h2 class="section-title">Our Signature Dishes</h2>
-    
-    <!-- Category Filters (يمكن إضافتها لاحقاً) -->
-    <div class="category-filters">
-        <button class="category-btn active">All Items</button>
-        <button class="category-btn">Appetizers</button>
-        <button class="category-btn">Main Course</button>
-        <button class="category-btn">Desserts</button>
-        <button class="category-btn">Drinks</button>
-    </div>
+
 
     <div class="row">
         @if (Model != null && Model.Any())
@@ -307,7 +380,41 @@
         </div>
     </div>
 </section>
+<section class="special-offers-section py-5 text-white">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <!-- الصورة -->
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="offer-image-container">
+                    <img src="~/images/discount.jpg" alt="Special Offer" class="offer-image shadow-lg">
+                    <div class="offer-badge">
+                        <i class="fas fa-star"></i> Limited Time
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-6">
+                <div class="offer-content">
+                    <h2 class="display-5 fw-bold mb-4 text-warning">
+                         Exclusive <span class="text-white">Special Offers</span>
+                    </h2>
+
+                    <div class="offer-item mb-4">
+                        <h4><i class="fas fa-clock text-warning me-2"></i>Happy Hour: 3 PM - 5 PM</h4>
+                        <p class="fs-5 text-light">Enjoy <span class="text-warning fw-bold">20% OFF</span> all menu items during happy hours!</p>
+                    </div>
+
+                    <div class="offer-item mb-4">
+                        <h4><i class="fas fa-tags text-warning me-2"></i>Bulk Discount</h4>
+                        <p class="fs-5 text-light">Spend over <span class="text-warning fw-bold">$100</span> and get an automatic 10% discount!</p>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const categoryBtns = document.querySelectorAll('.category-btn');

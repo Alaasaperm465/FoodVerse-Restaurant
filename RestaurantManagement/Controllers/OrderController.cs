@@ -58,7 +58,6 @@ namespace RestaurantManagement.Controllers
 
             return View(viewModel);
         }
-
         public async Task<IActionResult> Cart()   //صفحة الاوردرات اللي هتظهر لليوزر بس
         {
             var user = await _userManager.GetUserAsync(User);
@@ -237,7 +236,7 @@ namespace RestaurantManagement.Controllers
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = discountResult.DiscountAmount > 0
-                ? $"🎉 Discount Applied: {discountResult.DiscountDescription}"
+                ? $" Discount Applied: {discountResult.DiscountDescription}"
                 : "Order confirmed successfully!";
 
             return RedirectToAction("OrderConfirmed");
