@@ -1,0 +1,17 @@
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfoInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfo.cs
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.csproj.CoreCompileInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Infrastructure.deps.json
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Infrastructure.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Infrastructure.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Application.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Application.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\bin\Debug\net8.0\Model.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.csproj.AssemblyReference.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastr.15EFFBFE.Up2Date
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll

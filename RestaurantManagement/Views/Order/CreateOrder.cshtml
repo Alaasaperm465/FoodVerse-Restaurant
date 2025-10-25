@@ -1,0 +1,630 @@
+﻿@model RestaurantManagement.ViewModel.CreateOrderVM
+
+@{
+    ViewData["Title"] = "إنشاء طلب جديد";
+}
+
+<style>
+    .create-order-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 0 15px;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0;
+        font-size: 2.2rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-back:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+    .alert-custom {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+    }
+
+    .card-custom {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 25px 30px;
+        border: none;
+    }
+
+        .card-header-custom h5 {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    .card-body-custom {
+        padding: 30px;
+    }
+
+    .btn-add-item {
+        background: linear-gradient(135deg, #198754, #157347);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+        .btn-add-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+        }
+
+    .order-item-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .order-item-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-remove-item {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .btn-remove-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+        .form-label i {
+            color: var(--primary);
+            margin-right: 6px;
+        }
+
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+            background: white;
+        }
+
+    .price-display {
+        background: #e9ecef;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-weight: 600;
+        color: var(--primary);
+        text-align: center;
+    }
+
+    .summary-card {
+        position: sticky;
+        top: 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
+    }
+
+    .summary-header {
+        background: linear-gradient(135deg, #198754, #157347);
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+        .summary-header h5 {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+    .summary-body {
+        padding: 25px;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .summary-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .summary-value {
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .total-price {
+        font-size: 1.4rem;
+        color: var(--primary);
+        font-weight: 700;
+        border-top: 2px solid var(--primary);
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    .empty-message {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        color: #ddd;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .warning-message {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+        text-align: center;
+        color: #856404;
+        font-size: 0.9rem;
+    }
+
+    .notes-section {
+        margin-top: 25px;
+    }
+
+    .notes-header {
+        background: linear-gradient(135deg, #0dcaf0, #0baccc);
+        color: white;
+        padding: 20px 25px;
+        border: none;
+    }
+
+        .notes-header h6 {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .card-body-custom {
+            padding: 20px 15px;
+        }
+
+        .order-item-card {
+            padding: 20px 15px;
+        }
+
+        .summary-card {
+            position: static;
+            margin-top: 25px;
+        }
+    }
+
+    /* Animation */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .order-item-card {
+        animation: fadeIn 0.5s ease-out;
+    }
+</style>
+
+<section class="create-order-section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-cart-plus"></i>إنشاء طلب جديد
+            </h1>
+            <a asp-action="MyOrders" class="btn-back">
+                <i class="fas fa-arrow-left"></i>طلباتي
+            </a>
+        </div>
+
+        <!-- Error Alert -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <div>@TempData["Error"]</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <form asp-action="Create" method="post" id="orderForm">
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <!-- Products Section -->
+                <div class="col-lg-8">
+                    <!-- Add Products Card -->
+                    <div class="card-custom">
+                        <div class="card-header-custom">
+                            <h5><i class="fas fa-shopping-basket"></i>اختر المنتجات</h5>
+                        </div>
+                        <div class="card-body-custom">
+                            <button type="button" class="btn-add-item" onclick="addOrderItem()">
+                                <i class="fas fa-plus"></i>إضافة منتج
+                            </button>
+
+                            <div id="orderItemsContainer">
+                                <!-- Items will be added here by JavaScript -->
+                            </div>
+
+                            <div class="empty-message" id="emptyMessage">
+                                <i class="fas fa-info-circle empty-icon"></i>
+                                <h5>لم يتم إضافة أي منتجات بعد</h5>
+                                <p class="text-muted">انقر على زر "إضافة منتج" لبدء إنشاء طلبك</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="card-custom">
+                        <div class="notes-header">
+                            <h6><i class="fas fa-sticky-note"></i>ملاحظات إضافية (اختياري)</h6>
+                        </div>
+                        <div class="card-body-custom">
+                            <textarea asp-for="Notes" class="form-control" rows="4"
+                                      placeholder="أضف أي ملاحظات خاصة بطلبك..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <h5><i class="fas fa-receipt"></i>ملخص الطلب</h5>
+                        </div>
+                        <div class="summary-body">
+                            <div class="summary-item">
+                                <span class="summary-label">عدد الأصناف:</span>
+                                <span class="summary-value" id="itemCount">0</span>
+                            </div>
+
+                            <div class="summary-item">
+                                <span class="summary-label">الإجمالي:</span>
+                                <span class="summary-value total-price" id="totalPrice">0.00 ج.م</span>
+                            </div>
+
+                            <button type="submit" class="btn-submit" id="submitBtn" disabled>
+                                <i class="fas fa-check-circle"></i>تأكيد الطلب
+                            </button>
+
+                            <div class="warning-message">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                يرجى إضافة منتج واحد على الأقل
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let itemIndex = 0;
+        let menuItems = @Html.Raw(Json.Serialize(ViewBag.MenuItems));
+
+        function addOrderItem() {
+            const container = document.getElementById('orderItemsContainer');
+            document.getElementById('emptyMessage').style.display = 'none';
+
+            const itemHtml = `
+                <div class="order-item-card" id="item-${itemIndex}">
+                    <button type="button" class="btn-remove-item" onclick="removeOrderItem(${itemIndex})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="fas fa-utensils"></i>المنتج *
+                            </label>
+                            <select name="OrderItems[${itemIndex}].MenuItemId"
+                                    class="form-select menu-item-select"
+                                    onchange="updatePrice(${itemIndex})"
+                                    data-index="${itemIndex}"
+                                    required>
+                                <option value="">اختر المنتج</option>
+                                ${generateMenuOptions()}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                <i class="fas fa-hashtag"></i>الكمية *
+                            </label>
+                            <input type="number"
+                                   name="OrderItems[${itemIndex}].Quantity"
+                                   class="form-control quantity-input"
+                                   min="1"
+                                   value="1"
+                                   onchange="updateTotal()"
+                                   data-index="${itemIndex}"
+                                   required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                <i class="fas fa-tag"></i>السعر
+                            </label>
+                            <div class="price-display" id="price-${itemIndex}">0.00 ج.م</div>
+                            <input type="hidden"
+                                   name="OrderItems[${itemIndex}].Price"
+                                   id="price-hidden-${itemIndex}"
+                                   value="0" />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">
+                                <i class="fas fa-edit"></i>تعليمات خاصة (اختياري)
+                            </label>
+                            <input type="text"
+                                   name="OrderItems[${itemIndex}].SpecialInstructions"
+                                   class="form-control"
+                                   placeholder="مثال: بدون بصل، مع صلصة إضافية..." />
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', itemHtml);
+            itemIndex++;
+            updateTotal();
+        }
+
+        function generateMenuOptions() {
+            let options = '';
+            menuItems.forEach(item => {
+                options += `<option value="${item.value}">${item.text}</option>`;
+            });
+            return options;
+        }
+
+        function removeOrderItem(index) {
+            const item = document.getElementById(`item-${index}`);
+            item.style.animation = 'fadeIn 0.3s ease-out reverse';
+            setTimeout(() => {
+                item.remove();
+
+                const remainingItems = document.querySelectorAll('.order-item-card');
+                if (remainingItems.length === 0) {
+                    document.getElementById('emptyMessage').style.display = 'block';
+                }
+
+                updateTotal();
+            }, 300);
+        }
+
+        async function updatePrice(index) {
+            const select = document.querySelector(`select[data-index="${index}"]`);
+            const menuItemId = select.value;
+
+            if (!menuItemId) {
+                document.getElementById(`price-${index}`).textContent = '0.00 ج.م';
+                document.getElementById(`price-hidden-${index}`).value = '0';
+                updateTotal();
+                return;
+            }
+
+            try {
+                const response = await fetch(`/Order/GetMenuItemPrice?menuItemId=${menuItemId}`);
+                const data = await response.json();
+
+                if (data && data.price) {
+                    document.getElementById(`price-${index}`).textContent = data.price.toFixed(2) + ' ج.م';
+                    document.getElementById(`price-hidden-${index}`).value = data.price;
+
+                    if (!data.isAvailable || data.inStock <= 0) {
+                        alert('هذا المنتج غير متوفر حالياً');
+                        select.value = '';
+                        document.getElementById(`price-${index}`).textContent = '0.00 ج.م';
+                        document.getElementById(`price-hidden-${index}`).value = '0';
+                    }
+                }
+
+                updateTotal();
+            } catch (error) {
+                console.error('Error fetching price:', error);
+                alert('حدث خطأ في جلب سعر المنتج');
+            }
+        }
+
+        function updateTotal() {
+            let total = 0;
+            let itemCount = 0;
+
+            document.querySelectorAll('.order-item-card').forEach(item => {
+                const index = item.id.split('-')[1];
+                const price = parseFloat(document.getElementById(`price-hidden-${index}`).value) || 0;
+                const quantity = parseInt(document.querySelector(`input.quantity-input[data-index="${index}"]`).value) || 0;
+
+                if (price > 0 && quantity > 0) {
+                    total += price * quantity;
+                    itemCount++;
+                }
+            });
+
+            document.getElementById('totalPrice').textContent = total.toFixed(2) + ' ج.م';
+            document.getElementById('itemCount').textContent = itemCount;
+            document.getElementById('submitBtn').disabled = itemCount === 0;
+        }
+
+        // Add first item automatically when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            addOrderItem();
+        });
+
+        // Form submission handling
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري التأكيد...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                if (submitBtn.disabled) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 5000);
+        });
+    </script>
+}

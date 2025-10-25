@@ -1,0 +1,589 @@
+﻿@model List<RestaurantManagement.Models.Order>
+
+@{
+    ViewData["Title"] = "طلباتي";
+}
+
+<style>
+    .my-orders-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        padding: 0 15px;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0;
+        font-size: 2.2rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .btn-new-order {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-new-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+            color: white;
+        }
+
+    .alert-custom {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+    }
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .order-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+    .order-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 20px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+    }
+
+    .order-number {
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
+    .status-preparing {
+        background: rgba(13, 110, 253, 0.1);
+        color: #0d6efd;
+        border: 1px solid rgba(13, 110, 253, 0.2);
+    }
+
+    .status-ready {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
+    }
+
+    .status-delivered {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
+    .status-cancelled {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .order-body {
+        padding: 25px;
+    }
+
+    .order-info {
+        margin-bottom: 20px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+    .info-icon {
+        color: var(--primary);
+        width: 20px;
+        text-align: center;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: var(--dark);
+        min-width: 100px;
+    }
+
+    .info-value {
+        color: #666;
+        flex: 1;
+    }
+
+    .total-price {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.1rem;
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn-details {
+        background: linear-gradient(135deg, #0dcaf0, #0baccc);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        justify-content: center;
+    }
+
+        .btn-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
+            color: white;
+        }
+
+    .btn-cancel {
+        background: transparent;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+    }
+
+        .btn-cancel:hover {
+            background: #dc3545;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+    .empty-state {
+        background: white;
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .empty-title {
+        color: #666;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .empty-description {
+        color: #888;
+        margin-bottom: 30px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 12px;
+    }
+
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+    .progress-bar {
+        position: absolute;
+        top: 15px;
+        left: 0;
+        height: 3px;
+        background: var(--primary);
+        z-index: 2;
+        transition: all 0.3s ease;
+    }
+
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 3;
+        position: relative;
+    }
+
+    .step-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .step.active .step-icon {
+        background: var(--primary);
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.7rem;
+        color: #6c757d;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .step.active .step-label {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .orders-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .order-actions {
+            flex-direction: column;
+        }
+
+        .btn-details, .btn-cancel {
+            width: 100%;
+        }
+    }
+
+    /* Animation */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .order-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+</style>
+
+<section class="my-orders-section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-receipt"></i>طلباتي
+            </h1>
+            <a asp-action="Create" class="btn-new-order">
+                <i class="fas fa-plus"></i>طلب جديد
+            </a>
+        </div>
+
+        <!-- Success Alert -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <div>@TempData["Success"]</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Error Alert -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <div>@TempData["Error"]</div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (Model.Any())
+        {
+            <div class="orders-grid">
+                @foreach (var order in Model.OrderByDescending(o => o.OrderDate))
+                {
+                    <div class="order-card">
+                        <!-- Order Header -->
+                        <div class="order-header">
+                            <div class="order-number">
+                                <i class="fas fa-hashtag"></i>@order.OrderNumber
+                            </div>
+                            <span class="status-badge status-@order.Status.ToLower()">
+                                <i class="fas @GetStatusIcon(order.Status) me-1"></i>
+                                @GetStatusText(order.Status)
+                            </span>
+                        </div>
+
+                        <!-- Order Body -->
+                        <div class="order-body">
+                            <!-- Order Progress -->
+                            <div class="progress-container">
+                                <div class="progress-steps">
+                                    <div class="progress-bar" style="width: @GetProgressWidth(order.Status)%;"></div>
+                                    <div class="step @(order.Status != "Cancelled" && order.Status != "Delivered" ? "active" : "")">
+                                        <div class="step-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="step-label">معلق</div>
+                                    </div>
+                                    <div class="step @(order.Status == "Preparing" || order.Status == "Ready" || order.Status == "Delivered" ? "active" : "")">
+                                        <div class="step-icon">
+                                            <i class="fas fa-utensils"></i>
+                                        </div>
+                                        <div class="step-label">قيد التحضير</div>
+                                    </div>
+                                    <div class="step @(order.Status == "Ready" || order.Status == "Delivered" ? "active" : "")">
+                                        <div class="step-icon">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div class="step-label">جاهز</div>
+                                    </div>
+                                    <div class="step @(order.Status == "Delivered" ? "active" : "")">
+                                        <div class="step-icon">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div class="step-label">تم التوصيل</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Information -->
+                            <div class="order-info">
+                                <div class="info-item">
+                                    <i class="fas fa-calendar-alt info-icon"></i>
+                                    <span class="info-label">التاريخ:</span>
+                                    <span class="info-value">@order.OrderDate.ToString("dd/MM/yyyy hh:mm tt")</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-shopping-bag info-icon"></i>
+                                    <span class="info-label">عدد الأصناف:</span>
+                                    <span class="info-value">@(order.OrderItems?.Count ?? 0)</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-money-bill-wave info-icon"></i>
+                                    <span class="info-label">الإجمالي:</span>
+                                    <span class="info-value total-price">@order.TotalPrice.ToString("N2") ج.م</span>
+                                </div>
+                            </div>
+
+                            <!-- Order Actions -->
+                            <div class="order-actions">
+                                <a asp-action="Details" asp-route-id="@order.Id" class="btn-details">
+                                    <i class="fas fa-eye"></i>التفاصيل
+                                </a>
+
+                                @if (order.Status == "Pending")
+                                {
+                                    <form asp-action="Cancel" asp-route-id="@order.Id" method="post"
+                                          onsubmit="return confirm('هل أنت متأكد من إلغاء الطلب؟')"
+                                          style="display: contents;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn-cancel">
+                                            <i class="fas fa-times"></i>إلغاء
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-shopping-basket empty-icon"></i>
+                <h3 class="empty-title">لا توجد طلبات حتى الآن</h3>
+                <p class="empty-description">ابدأ بطلب وجباتك المفضلة الآن!</p>
+                <a asp-action="Create" class="btn-new-order">
+                    <i class="fas fa-plus"></i>إنشاء طلب جديد
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+
+        // Add hover effects to order cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderCards = document.querySelectorAll('.order-card');
+
+            orderCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+            });
+        });
+    </script>
+}
+
+@functions {
+    public string GetStatusIcon(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "fa-clock",
+            "preparing" => "fa-utensils",
+            "ready" => "fa-check-circle",
+            "delivered" => "fa-truck",
+            "cancelled" => "fa-times-circle",
+            _ => "fa-question-circle"
+        };
+    }
+
+    public string GetStatusText(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "قيد الانتظار",
+            "preparing" => "قيد التحضير",
+            "ready" => "جاهز",
+            "delivered" => "تم التوصيل",
+            "cancelled" => "ملغي",
+            _ => status
+        };
+    }
+
+    public int GetProgressWidth(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => 25,
+            "preparing" => 50,
+            "ready" => 75,
+            "delivered" => 100,
+            "cancelled" => 0,
+            _ => 0
+        };
+    }
+}

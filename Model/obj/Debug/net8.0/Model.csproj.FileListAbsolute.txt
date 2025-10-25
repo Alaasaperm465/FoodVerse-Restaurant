@@ -1,0 +1,12 @@
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.GeneratedMSBuildEditorConfig.editorconfig
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.AssemblyInfoInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.AssemblyInfo.cs
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.csproj.CoreCompileInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\bin\Debug\net8.0\Model.deps.json
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\bin\Debug\net8.0\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\bin\Debug\net8.0\Model.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.csproj.AssemblyReference.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\refint\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\ref\Model.dll

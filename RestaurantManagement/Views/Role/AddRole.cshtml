@@ -1,0 +1,155 @@
+﻿@model RestaurantManagement.ViewModel.RoleVM
+
+@{
+    ViewData["Title"] = "Add New Role";
+}
+
+<style>
+    .add-role-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .role-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 450px;
+        width: 100%;
+        border: none;
+    }
+
+    .role-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .role-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .role-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--dark);
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+        }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .validation-summary-errors {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #721c24;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+        }
+
+    .btn-back {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+        .btn-back:hover {
+            background: #6c757d;
+            color: white;
+        }
+</style>
+
+<section class="add-role-section">
+    <div class="container">
+        <div class="role-card">
+            <div class="role-header">
+                <i class="fas fa-user-shield role-icon"></i>
+                <h1 class="role-title">Add New Role</h1>
+            </div>
+
+            <form asp-action="AddRole">
+                <div asp-validation-summary="All" class="validation-summary-errors"></div>
+
+                <div class="form-group">
+                    <label asp-for="RoleName" class="form-label">Role Name</label>
+                    <input asp-for="RoleName" class="form-control" placeholder="Enter role name" />
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn-submit">Create Role</button>
+                <a asp-action="Index" class="btn-back">Back to List</a>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

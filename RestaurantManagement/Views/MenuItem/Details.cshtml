@@ -1,0 +1,649 @@
+﻿@model RestaurantManagement.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Menu Item Details";
+}
+
+<style>
+    .details-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .details-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .details-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .details-card-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+        .details-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+    .details-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .details-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .details-subtitle {
+        opacity: 0.9;
+        margin: 8px 0 0;
+        font-size: 1rem;
+    }
+
+    .details-card-body {
+        padding: 40px;
+    }
+
+    .details-content {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    .image-section {
+        text-align: center;
+    }
+
+    .item-image {
+        width: 100%;
+        max-width: 280px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border: 3px solid #f8f9fa;
+    }
+
+    .image-placeholder {
+        width: 100%;
+        height: 250px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 3rem;
+        border: 3px dashed #dee2e6;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .info-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.2rem;
+    }
+
+    .detail-item {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-left: 4px solid var(--primary);
+        transition: all 0.3s ease;
+    }
+
+        .detail-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .detail-label i {
+            color: var(--primary);
+            width: 16px;
+        }
+
+    .detail-value {
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+        word-break: break-word;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-available {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
+    }
+
+    .status-unavailable {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
+    .status-active {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
+    }
+
+    .status-inactive {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .price-value {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .price-value::before {
+            content: '$';
+            font-size: 1rem;
+            color: #198754;
+        }
+
+    .stock-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #fd7e14;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .stock-low {
+        color: #dc3545;
+    }
+
+    .stock-high {
+        color: #198754;
+    }
+
+    .time-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #6f42c1;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .time-value::after {
+            content: 'min';
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-left: 2px;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #e9ecef;
+        grid-column: 1 / -1;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 35px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+            color: white;
+        }
+
+    .btn-back {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-back:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        font-style: italic;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 1px dashed #dee2e6;
+    }
+
+    .metadata-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        grid-column: 1 / -1;
+    }
+
+    .metadata-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .metadata-item {
+        text-align: center;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .metadata-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+    }
+
+    .metadata-value {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+    }
+
+    @@media (max-width: 968px) {
+        .details-content {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .image-section {
+            text-align: center;
+        }
+
+        .item-image {
+            max-width: 250px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .details-container {
+            margin: 20px;
+        }
+
+        .details-card-body {
+            padding: 30px 25px;
+        }
+
+        .details-card-header {
+            padding: 25px 20px;
+        }
+
+        .details-title {
+            font-size: 1.6rem;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-edit, .btn-back {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .metadata-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .metadata-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .detail-item {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+        .detail-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .detail-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .detail-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .detail-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+</style>
+
+<section class="details-section">
+    <div class="container">
+        <div class="details-container">
+            <div class="details-card">
+                <div class="details-card-header">
+                    <i class="fas fa-utensils details-icon"></i>
+                    <h1 class="details-title">Menu Item Details</h1>
+                    <p class="details-subtitle">Complete information about this menu item</p>
+                </div>
+
+                <div class="details-card-body">
+                    <div class="details-content">
+                        <div class="image-section">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="~/images/@Model.ImageUrl" class="item-image" alt="@Model.Name" />
+                            }
+                            else
+                            {
+                                <div class="image-placeholder">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="info-sections">
+                            <div class="info-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-info-circle"></i>Basic Information
+                                </h3>
+                                <div class="info-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-tag"></i>Item Name
+                                        </div>
+                                        <p class="detail-value">@Model.Name</p>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-dollar-sign"></i>Price
+                                        </div>
+                                        <div class="price-value">@Model.Price.ToString("0.00")</div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-layer-group"></i>Category
+                                        </div>
+                                        <p class="detail-value">Category #@Model.CategoryId</p>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-clock"></i>Preparation Time
+                                        </div>
+                                        <div class="time-value">@Model.PreparationTime</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-align-left"></i>Description
+                                </h3>
+                                <div class="detail-item">
+                                    <div class="detail-label">
+                                        <i class="fas fa-file-alt"></i>Item Description
+                                    </div>
+                                    <p class="detail-value">
+                                        @if (!string.IsNullOrEmpty(Model.Description))
+                                        {
+                                            @Model.Description
+                                        }
+                                        else
+                                        {
+                                            <span class="empty-state">No description provided</span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="info-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-chart-bar"></i>Status & Inventory
+                                </h3>
+                                <div class="info-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-power-off"></i>Availability
+                                        </div>
+                                        <div class="detail-value">
+                                            @if (Model.IsAvailable)
+                                            {
+                                                <span class="status-badge status-available">
+                                                    <i class="fas fa-check-circle"></i>Available
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-badge status-unavailable">
+                                                    <i class="fas fa-times-circle"></i>Unavailable
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-boxes"></i>Stock Quantity
+                                        </div>
+                                        <div class="detail-value">
+                                            <span class="stock-value @(Model.Instoke < 10 ? "stock-low" : Model.Instoke > 50 ? "stock-high" : "")">
+                                                @Model.Instoke units
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="detail-item">
+                                        <div class="detail-label">
+                                            <i class="fas fa-trash"></i>Deletion Status
+                                        </div>
+                                        <div class="detail-value">
+                                            @if (Model.IsDeleted)
+                                            {
+                                                <span class="status-badge status-inactive">
+                                                    <i class="fas fa-trash"></i>Deleted
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-badge status-active">
+                                                    <i class="fas fa-check"></i>Active
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metadata-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-database"></i>System Metadata
+                            </h3>
+                            <div class="metadata-grid">
+                                <div class="metadata-item">
+                                    <div class="metadata-label">Item ID</div>
+                                    <div class="metadata-value">@Model.Id</div>
+                                </div>
+                                <div class="metadata-item">
+                                    <div class="metadata-label">Category ID</div>
+                                    <div class="metadata-value">@Model.CategoryId</div>
+                                </div>
+                                <div class="metadata-item">
+                                    <div class="metadata-label">Created At</div>
+                                    <div class="metadata-value">@Model.CreatedAt.ToString("MMM dd, yyyy")</div>
+                                </div>
+                                <div class="metadata-item">
+                                    <div class="metadata-label">Image File</div>
+                                    <div class="metadata-value">@(Model.ImageUrl ?? "No image")</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <a asp-action="Index" class="btn-back">
+                                <i class="fas fa-arrow-left"></i>Back to Menu Items
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                                <i class="fas fa-edit"></i>Edit Item
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailItems = document.querySelectorAll('.detail-item');
+
+        detailItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(8px)';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        const buttons = document.querySelectorAll('.btn-edit, .btn-back');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        const statusBadges = document.querySelectorAll('.status-badge');
+        statusBadges.forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>

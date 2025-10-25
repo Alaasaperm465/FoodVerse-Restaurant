@@ -1,0 +1,602 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<style>
+    .edit-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .edit-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .edit-card-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+        .edit-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+    .edit-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+        animation: spin 3s linear infinite;
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .edit-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .edit-subtitle {
+        opacity: 0.9;
+        margin: 8px 0 0;
+        font-size: 1rem;
+    }
+
+    .edit-card-body {
+        padding: 40px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+        .form-label i {
+            color: var(--primary);
+            margin-right: 8px;
+            width: 20px;
+        }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 14px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fafafa;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+            background: white;
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+            opacity: 0.7;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+        color: #dc3545 !important;
+    }
+
+    .validation-summary-errors {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+        color: #721c24;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+    }
+
+    .toggle-label {
+        font-weight: 500;
+        color: var(--dark);
+        margin: 0;
+        flex: 1;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+    }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary);
+    }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+    .toggle-status {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #6c757d;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    input:checked + .toggle-slider + .toggle-status {
+        color: var(--primary);
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #198754, #157347);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 35px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+            color: white;
+        }
+
+    .btn-cancel {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-cancel:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+    .form-helper {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 42px;
+        color: #6c757d;
+        font-size: 1.1rem;
+    }
+
+    .preview-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .preview-title {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 10px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .preview-content {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .preview-item {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .preview-label {
+        font-weight: 500;
+        min-width: 120px;
+        color: #333;
+    }
+
+    .preview-value {
+        flex: 1;
+        color: #666;
+    }
+
+    .status-preview {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+    }
+
+    .status-inactive {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+    }
+
+    @@media (max-width: 768px) {
+        .edit-container {
+            margin: 20px;
+        }
+
+        .edit-card-body {
+            padding: 30px 25px;
+        }
+
+        .edit-card-header {
+            padding: 25px 20px;
+        }
+
+        .edit-title {
+            font-size: 1.6rem;
+        }
+
+        .btn-group {
+            flex-direction: column-reverse;
+        }
+
+        .btn-save, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .btn-loading {
+        position: relative;
+        color: transparent;
+    }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-right-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+    .char-counter {
+        text-align: right;
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+        .char-counter.warning {
+            color: #ffc107;
+        }
+
+        .char-counter.danger {
+            color: #dc3545;
+        }
+</style>
+
+<section class="edit-section">
+    <div class="container">
+        <div class="edit-container">
+            <div class="edit-card">
+                <div class="edit-card-header">
+                    <i class="fas fa-edit edit-icon"></i>
+                    <h1 class="edit-title">Edit Category</h1>
+                    <p class="edit-subtitle">Update category information and settings</p>
+                </div>
+
+                <div class="edit-card-body">
+                    <form asp-action="Edit" id="editForm">
+                        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label">
+                                <i class="fas fa-tag"></i>Category Name
+                            </label>
+                            <input asp-for="Name" class="form-control" placeholder="e.g., Appetizers, Main Course, Desserts" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <div class="form-helper">Choose a clear and descriptive name for your category</div>
+                            <i class="fas fa-edit input-icon"></i>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="form-label">
+                                <i class="fas fa-align-left"></i>Description
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe this category and the types of items it will contain..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <div class="char-counter" id="descCounter">@(Model.Description?.Length ?? 0)/200 characters</div>
+                            <div class="form-helper">Optional: Provide details about this category</div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="toggle-group">
+                                <label class="toggle-label">
+                                    <i class="fas fa-power-off"></i>Category Status
+                                </label>
+                                <label class="toggle-switch">
+                                    <input asp-for="IsActive" type="checkbox" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="statusText">
+                                    @(Model.IsActive ? "Active" : "Inactive")
+                                </span>
+                            </div>
+                            <div class="form-helper">Toggle to activate or deactivate this category</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="DisplayOrder" class="form-label">
+                                <i class="fas fa-sort-numeric-down"></i>Display Order
+                            </label>
+                            <input asp-for="DisplayOrder" class="form-control" placeholder="e.g., 1, 2, 3..." type="number" min="1" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            <div class="form-helper">Lower numbers appear first in the menu</div>
+                            <i class="fas fa-sort input-icon"></i>
+                        </div>
+
+                        <div class="preview-section">
+                            <div class="preview-title">
+                                <i class="fas fa-eye"></i>Live Preview
+                            </div>
+                            <div class="preview-content">
+                                <div class="preview-item">
+                                    <span class="preview-label">Name:</span>
+                                    <span class="preview-value" id="previewName">@Model.Name</span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Description:</span>
+                                    <span class="preview-value" id="previewDesc">@(string.IsNullOrEmpty(Model.Description) ? "No description" : Model.Description)</span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Status:</span>
+                                    <span class="preview-value">
+                                        <span class="status-preview @(Model.IsActive ? "status-active" : "status-inactive")" id="previewStatus">
+                                            <i class="fas @(Model.IsActive ? "fa-check-circle" : "fa-times-circle")"></i>
+                                            @(Model.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Display Order:</span>
+                                    <span class="preview-value" id="previewOrder">@Model.DisplayOrder</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <a asp-action="Index" class="btn-cancel">
+                                <i class="fas fa-times"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn-save" id="saveBtn">
+                                <i class="fas fa-save"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('Name').addEventListener('input', updatePreview);
+        document.getElementById('Description').addEventListener('input', updatePreview);
+        document.getElementById('IsActive').addEventListener('change', updatePreview);
+        document.getElementById('DisplayOrder').addEventListener('input', updatePreview);
+
+        document.getElementById('Description').addEventListener('input', function() {
+            const length = this.value.length;
+            const counter = document.getElementById('descCounter');
+            counter.textContent = `${length}/200 characters`;
+
+            if (length > 180) {
+                counter.classList.add('warning');
+                counter.classList.remove('danger');
+            } else if (length > 190) {
+                counter.classList.remove('warning');
+                counter.classList.add('danger');
+            } else {
+                counter.classList.remove('warning', 'danger');
+            }
+        });
+
+        document.getElementById('IsActive').addEventListener('change', function() {
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = this.checked ? 'Active' : 'Inactive';
+            statusText.style.color = this.checked ? '#198754' : '#6c757d';
+        });
+
+        function updatePreview() {
+            const name = document.getElementById('Name').value;
+            document.getElementById('previewName').textContent = name || 'No name';
+
+            const desc = document.getElementById('Description').value;
+            document.getElementById('previewDesc').textContent = desc || 'No description';
+
+            const isActive = document.getElementById('IsActive').checked;
+            const statusPreview = document.getElementById('previewStatus');
+            statusPreview.className = `status-preview ${isActive ? 'status-active' : 'status-inactive'}`;
+            statusPreview.innerHTML = `<i class="fas ${isActive ? 'fa-check-circle' : 'fa-times-circle'}"></i>${isActive ? 'Active' : 'Inactive'}`;
+
+            const order = document.getElementById('DisplayOrder').value;
+            document.getElementById('previewOrder').textContent = order || 'Not set';
+        }
+
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
+
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            saveBtn.disabled = true;
+
+            setTimeout(() => {
+                if (saveBtn.disabled) {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                }
+            }, 5000);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('Name').focus();
+
+            const isActive = document.getElementById('IsActive').checked;
+            const statusText = document.getElementById('statusText');
+            statusText.style.color = isActive ? '#198754' : '#6c757d';
+        });
+
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+}

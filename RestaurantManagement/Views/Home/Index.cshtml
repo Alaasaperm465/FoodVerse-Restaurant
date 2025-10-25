@@ -1,0 +1,337 @@
+﻿@model List<RestaurantManagement.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(44, 44, 44, 0.7), rgba(44, 44, 44, 0.7)), 
+                    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0 80px;
+        text-align: center;
+        margin-top: -80px;
+        margin-bottom: 60px;
+    }
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: var(--secondary);
+        margin: 15px auto;
+        border-radius: 2px;
+    }
+
+    .menu-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-container {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .menu-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .menu-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .card-body {
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 220px);
+    }
+
+    .card-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 600;
+        color: var(--dark);
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        color: #666;
+        flex-grow: 1;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+
+    .price {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 15px;
+    }
+
+    .btn-order {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-order:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(197, 45, 47, 0.4);
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #999;
+        margin-bottom: 10px;
+    }
+
+    .category-filters {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+
+    .category-btn {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 50px;
+        padding: 8px 20px;
+        color: var(--text);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+    }
+
+    .special-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--secondary);
+        color: var(--dark);
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 2;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .category-filters {
+            gap: 5px;
+        }
+        
+        .category-btn {
+            padding: 6px 15px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">Welcome to Gourmet Haven</h1>
+        <p class="hero-subtitle">Experience culinary excellence with our carefully crafted dishes made from the finest ingredients</p>
+        <a href="#menu" class="btn btn-order btn-lg">
+            <i class="fas fa-utensils"></i> Explore Our Menu
+        </a>
+    </div>
+</section>
+
+<!-- Menu Section -->
+<div class="container" id="menu">
+    <h2 class="section-title">Our Signature Dishes</h2>
+    
+    <!-- Category Filters (يمكن إضافتها لاحقاً) -->
+    <div class="category-filters">
+        <button class="category-btn active">All Items</button>
+        <button class="category-btn">Appetizers</button>
+        <button class="category-btn">Main Course</button>
+        <button class="category-btn">Desserts</button>
+        <button class="category-btn">Drinks</button>
+    </div>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+                    <div class="menu-card">
+                        <div class="card-img-container">
+                            <img src="~/images/@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                            @if (item.Price > 25) 
+                            {
+                                <span class="special-badge">
+                                    <i class="fas fa-star me-1"></i>Chef's Special
+                                </span>
+                            }
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Description</p>
+                            <div class="mt-auto">
+                                <div class="price">$@item.Price.ToString("0.00")</div>
+                                <a asp-controller="Order" asp-action="AddToCart" asp-route-id="@item.Id" 
+                                   class="btn-order w-100">
+                                    <i class="fas fa-shopping-cart"></i> Add to Order
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="fas fa-utensils"></i>
+                    <h3>No Menu Items Available</h3>
+                    <p>We're currently updating our menu. Please check back later!</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="py-5 bg-light mt-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-shipping-fast fa-3x text-primary"></i>
+                </div>
+                <h4>Fast Delivery</h4>
+                <p class="text-muted">Fresh food delivered to your doorstep within 30 minutes</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-leaf fa-3x text-success"></i>
+                </div>
+                <h4>Fresh Ingredients</h4>
+                <p class="text-muted">We use only the freshest, locally sourced ingredients</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-icon mb-3">
+                    <i class="fas fa-cheese fa-3x text-warning"></i>
+                </div>
+                <h4>Expert Chefs</h4>
+                <p class="text-muted">Our master chefs create culinary masterpieces just for you</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // تأثيرات تفاعلية للفلاتر
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // إزالة النشاط من جميع الأزرار
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                // إضافة النشاط للزر المختار
+                this.classList.add('active');
+                
+                // هنا يمكن إضافة كود تصفية العناصر حسب التصنيف
+                // filterMenuItems(this.textContent.trim());
+            });
+        });
+        
+        // تأثيرات scroll للروابط
+        document.querySelector('a[href="#menu"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('#menu').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>

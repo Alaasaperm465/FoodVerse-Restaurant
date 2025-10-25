@@ -1,0 +1,390 @@
+﻿@model RestaurantManagement.ViewModel.OrderDetailsVM
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<style>
+    :root {
+        --primary: #c52d2f;
+        --primary-dark: #9a2324;
+        --dark: #2c3e50;
+        --light: #f8f9fa;
+    }
+
+    .order-details-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+    }
+
+    .order-details-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 25px 30px;
+        border: none;
+        position: relative;
+    }
+
+        .card-header-custom h2 {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.5rem;
+        }
+
+    .order-number-badge {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .details-container {
+        padding: 30px;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .detail-group {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+
+        .detail-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .detail-title {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .detail-title i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+    .detail-value {
+        font-size: 1.1rem;
+        color: #333;
+        font-weight: 500;
+        padding-left: 30px;
+    }
+
+    .status-badge {
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
+    .status-confirmed {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
+    }
+
+    .status-completed {
+        background: rgba(111, 66, 193, 0.1);
+        color: #6f42c1;
+        border: 1px solid rgba(111, 66, 193, 0.2);
+    }
+
+    .status-cancelled {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .status-preparing {
+        background: rgba(13, 110, 253, 0.1);
+        color: #0d6efd;
+        border: 1px solid rgba(13, 110, 253, 0.2);
+    }
+
+    .notes-section {
+        background: #fff9e6;
+        border-radius: 15px;
+        padding: 25px;
+        border-left: 4px solid #ffc107;
+    }
+
+    .notes-title {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.1rem;
+    }
+
+        .notes-title i {
+            color: #ffc107;
+        }
+
+    .notes-content {
+        color: #666;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .btn-back {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+            color: white;
+        }
+
+    .btn-print {
+        background: linear-gradient(135deg, #0dcaf0, #0baccc);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 202, 240, 0.3);
+            color: white;
+        }
+
+    .btn-update {
+        background: linear-gradient(135deg, #198754, #157347);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.3);
+            color: white;
+        }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .detail-group {
+            padding: 15px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-back, .btn-print, .btn-update {
+            width: 100%;
+            max-width: 250px;
+            justify-content: center;
+        }
+
+        .order-number-badge {
+            position: static;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .card-header-custom {
+            text-align: center;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .order-details-section {
+            padding: 20px 0;
+        }
+
+        .details-container {
+            padding: 20px;
+        }
+
+        .detail-value {
+            padding-left: 0;
+        }
+    }
+</style>
+
+<section class="order-details-section">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fas fa-file-invoice me-2"></i>Order Details
+        </h1>
+
+        <div class="order-details-card">
+            <div class="card-header-custom">
+                <h2><i class="fas fa-receipt"></i> Order Information</h2>
+                <div class="order-number-badge">
+                    <i class="fas fa-hashtag me-1"></i>@Model.OrderNumber
+                </div>
+            </div>
+
+            <div class="details-container">
+                <div class="details-grid">
+                    <div class="detail-group">
+                        <div class="detail-title">
+                            <i class="fas fa-user"></i>Customer Information
+                        </div>
+                        <div class="detail-value">
+                            <div><strong>Name:</strong> @Model.UserName</div>
+                            <div><strong>Email:</strong> @Model.UserEmail</div>
+                            <div><strong>Address:</strong> @Model.UserAddress</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-title">
+                            <i class="fas fa-calendar-alt"></i>Order Information
+                        </div>
+                        <div class="detail-value">
+                            <div><strong>Date:</strong> @Model.OrderDate.ToString("yyyy-MM-dd HH:mm")</div>
+                            <div><strong>Total:</strong> <span style="color: var(--primary); font-weight: 700;">$@Model.TotalPrice.ToString("0.00")</span></div>
+                            <div>
+                                <strong>Status:</strong>
+                                <span class="status-badge status-@Model.Status.ToLower()">
+                                    <i class="fas @GetStatusIcon(Model.Status)"></i>
+                                    @Model.Status
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Notes))
+                {
+                    <div class="notes-section">
+                        <div class="notes-title">
+                            <i class="fas fa-sticky-note"></i>Order Notes
+                        </div>
+                        <div class="notes-content">
+                            @Model.Notes
+                        </div>
+                    </div>
+                }
+
+                <div class="action-buttons">
+                    <a asp-action="Index" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>Back to Orders
+                    </a>
+                    <a href="javascript:window.print()" class="btn-print">
+                        <i class="fas fa-print"></i>Print Order
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    public string GetStatusIcon(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "fa-clock",
+            "confirmed" => "fa-check-circle",
+            "completed" => "fa-flag-checkered",
+            "cancelled" => "fa-times-circle",
+            "preparing" => "fa-utensils",
+            _ => "fa-question-circle"
+        };
+    }
+}

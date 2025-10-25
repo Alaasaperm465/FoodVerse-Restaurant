@@ -1,0 +1,372 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmed";
+}
+
+<style>
+    .confirmation-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .confirmation-card {
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        padding: 60px 40px;
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .confirmation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+    .confirmation-icon {
+        font-size: 5rem;
+        color: #198754;
+        margin-bottom: 25px;
+        display: block;
+        animation: bounce 1s ease-in-out;
+    }
+
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-20px);
+        }
+
+        60% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .confirmation-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+    }
+
+    .confirmation-message {
+        color: #666;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-back-menu {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 15px 40px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 8px 25px rgba(197, 45, 47, 0.3);
+    }
+
+        .btn-back-menu:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(197, 45, 47, 0.4);
+            color: white;
+        }
+
+    .order-details {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+        text-align: left;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+    .detail-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        color: var(--dark);
+        font-weight: 600;
+    }
+
+    .estimated-time {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        border: 1px solid #ffecb5;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 25px 0;
+        text-align: center;
+    }
+
+    .time-icon {
+        font-size: 2rem;
+        color: #ffc107;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .time-text {
+        color: #856404;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: var(--primary);
+        border-radius: 50%;
+        animation: confetti-fall 3s ease-in-out infinite;
+    }
+
+    @@keyframes confetti-fall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(500px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    .next-steps {
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .steps-title {
+        color: var(--dark);
+        font-weight: 600;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .steps-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .steps-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+            .steps-list li i {
+                color: var(--primary);
+                width: 20px;
+            }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .confirmation-card {
+            padding: 40px 25px;
+            margin: 20px;
+        }
+
+        .confirmation-title {
+            font-size: 2rem;
+        }
+
+        .confirmation-message {
+            font-size: 1.1rem;
+        }
+
+        .confirmation-icon {
+            font-size: 4rem;
+        }
+
+        .btn-back-menu {
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .confirmation-card {
+            padding: 30px 20px;
+        }
+
+        .confirmation-title {
+            font-size: 1.8rem;
+        }
+
+        .order-details {
+            padding: 20px 15px;
+        }
+
+        .detail-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+    }
+
+    /* Celebration Animation */
+    .celebrate {
+        animation: celebrate 0.6s ease-in-out;
+    }
+
+    @@keyframes celebrate {
+        0%, 100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+</style>
+
+<section class="confirmation-section">
+    <div class="container">
+        <div class="confirmation-card celebrate">
+            <i class="fas fa-check-circle confirmation-icon"></i>
+
+            <h1 class="confirmation-title">تم تأكيد طلبك بنجاح! 🎉</h1>
+
+            <p class="confirmation-message">
+                شكراً لاختيارك مطعمنا! فريقنا يعمل الآن على تحضير وجبتك اللذيذة بأعلى معايير الجودة
+            </p>
+
+            <div class="estimated-time">
+                <i class="fas fa-clock time-icon"></i>
+                <p class="time-text">⏱️ الوقت المتوقع للتجهيز: 20-30 دقيقة</p>
+            </div>
+
+            <div class="order-details">
+                <div class="detail-item">
+                    <span class="detail-label">رقم الطلب:</span>
+                    <span class="detail-value">#@(DateTime.Now.Ticks.ToString().Substring(8))</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">وقت التأكيد:</span>
+                    <span class="detail-value">@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">حالة الطلب:</span>
+                    <span class="detail-value" style="color: #198754;">قيد التحضير</span>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h4 class="steps-title">ماذا بعد؟</h4>
+                <ul class="steps-list">
+                    <li>
+                        <i class="fas fa-utensils"></i>
+                        <span>سيتم تحضير طلبك بأسرع وقت ممكن</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        <span>سنقوم بإشعارك عند اكتمال الطلب</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-receipt"></i>
+                        <span>يمكنك متابعة حالة الطلب من صفحة "طلباتي"</span>
+                    </li>
+                </ul>
+            </div>
+
+            <a asp-controller="MenuItem" asp-action="Index" class="btn-back-menu">
+                <i class="fas fa-arrow-right"></i>Back To Menu
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            createConfetti();
+
+            const card = document.querySelector('.confirmation-card');
+            card.classList.add('celebrate');
+
+            setTimeout(() => {
+                card.classList.remove('celebrate');
+            }, 600);
+        });
+
+        function createConfetti() {
+            const container = document.querySelector('.confirmation-card');
+            const colors = ['#c52d2f', '#f8b500', '#198754', '#0dcaf0', '#6f42c1'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+            }
+        }
+
+        const btn = document.querySelector('.btn-back-menu');
+
+        btn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px) scale(1.02)';
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(-3px)';
+        });
+
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+}

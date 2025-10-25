@@ -1,0 +1,474 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<style>
+    .details-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .details-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .details-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .details-card-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+        .details-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+    .details-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .details-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .details-subtitle {
+        opacity: 0.9;
+        margin: 8px 0 0;
+        font-size: 1rem;
+    }
+
+    .details-card-body {
+        padding: 40px;
+    }
+
+    .details-grid {
+        display: grid;
+        gap: 25px;
+    }
+
+    .detail-item {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid var(--primary);
+        transition: all 0.3s ease;
+    }
+
+        .detail-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .detail-label i {
+            color: var(--primary);
+            width: 16px;
+        }
+
+    .detail-value {
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-active {
+        background: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
+    }
+
+    .status-inactive {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 35px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+            color: white;
+        }
+
+    .btn-back {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-back:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    .metadata {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 30px;
+    }
+
+    .metadata-title {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .metadata-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .metadata-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .metadata-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .metadata-value {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .details-container {
+            margin: 20px;
+        }
+
+        .details-card-body {
+            padding: 30px 25px;
+        }
+
+        .details-card-header {
+            padding: 25px 20px;
+        }
+
+        .details-title {
+            font-size: 1.6rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-edit, .btn-back {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .metadata-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Animation */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .detail-item {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+        .detail-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .detail-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .detail-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .detail-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+    /* Icon colors for different fields */
+    .icon-name {
+        color: #0d6efd;
+    }
+
+    .icon-desc {
+        color: #198754;
+    }
+
+    .icon-status {
+        color: #ffc107;
+    }
+
+    .icon-order {
+        color: #6f42c1;
+    }
+</style>
+
+<section class="details-section">
+    <div class="container">
+        <div class="details-container">
+            <div class="details-card">
+                <!-- Card Header -->
+                <div class="details-card-header">
+                    <i class="fas fa-info-circle details-icon"></i>
+                    <h1 class="details-title">Category Details</h1>
+                    <p class="details-subtitle">Complete information about this menu category</p>
+                </div>
+
+                <!-- Card Body -->
+                <div class="details-card-body">
+                    <div class="details-grid">
+                        <!-- Name -->
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-tag icon-name"></i>Category Name
+                            </div>
+                            <p class="detail-value">
+                                @if (!string.IsNullOrEmpty(Model.Name))
+                                {
+                                    @Model.Name
+                                }
+                                else
+                                {
+                                    <span class="empty-state">No name provided</span>
+                                }
+                            </p>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-align-left icon-desc"></i>Description
+                            </div>
+                            <p class="detail-value">
+                                @if (!string.IsNullOrEmpty(Model.Description))
+                                {
+                                    @Model.Description
+                                }
+                                else
+                                {
+                                    <span class="empty-state">No description provided</span>
+                                }
+                            </p>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-power-off icon-status"></i>Status
+                            </div>
+                            <div class="detail-value">
+                                @if (Model.IsActive)
+                                {
+                                    <span class="status-badge status-active">
+                                        <i class="fas fa-check-circle"></i>Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-inactive">
+                                        <i class="fas fa-times-circle"></i>Inactive
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Display Order -->
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-sort-numeric-down icon-order"></i>Display Order
+                            </div>
+                            <p class="detail-value">
+                                @Model.DisplayOrder
+                                <small class="text-muted ms-2">(Lower numbers appear first)</small>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Metadata -->
+                    <div class="metadata">
+                        <h4 class="metadata-title">
+                            <i class="fas fa-database"></i>Category Metadata
+                        </h4>
+                        <div class="metadata-grid">
+                            <div class="metadata-item">
+                                <span class="metadata-label">Category ID</span>
+                                <span class="metadata-value">@Model.Id</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Created Date</span>
+                                <span class="metadata-value">@DateTime.Now.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Last Updated</span>
+                                <span class="metadata-value">@DateTime.Now.ToString("MMM dd, yyyy")</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="metadata-label">Menu Items</span>
+                                <span class="metadata-value">12 items</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a asp-action="Index" class="btn-back">
+                            <i class="fas fa-arrow-left"></i>Back to Categories
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                            <i class="fas fa-edit"></i>Edit Category
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Add interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailItems = document.querySelectorAll('.detail-item');
+
+        detailItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(8px)';
+            });
+
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Add click animation to buttons
+        const buttons = document.querySelectorAll('.btn-edit, .btn-back');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Status badge animation
+        const statusBadge = document.querySelector('.status-badge');
+        if (statusBadge) {
+            statusBadge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+
+            statusBadge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+    });
+</script>

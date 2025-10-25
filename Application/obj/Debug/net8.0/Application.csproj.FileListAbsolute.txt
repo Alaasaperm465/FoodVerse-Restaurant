@@ -1,0 +1,15 @@
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.GeneratedMSBuildEditorConfig.editorconfig
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.AssemblyInfoInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.AssemblyInfo.cs
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.csproj.CoreCompileInputs.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\bin\Debug\net8.0\Application.deps.json
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\bin\Debug\net8.0\Application.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\bin\Debug\net8.0\Application.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\bin\Debug\net8.0\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\bin\Debug\net8.0\Model.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.csproj.AssemblyReference.cache
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Applicat.44B5EDA2.Up2Date
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\refint\Application.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.pdb
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\ref\Application.dll

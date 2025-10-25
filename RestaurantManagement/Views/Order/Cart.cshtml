@@ -1,0 +1,570 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<style>
+    .cart-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .page-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+    }
+
+    .empty-cart {
+        background: white;
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .cart-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .cart-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+        .cart-header h4 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+    .cart-body {
+        padding: 30px;
+    }
+
+    .table {
+        margin: 0;
+        border: none;
+    }
+
+        .table thead th {
+            background: #f8f9fa;
+            color: var(--dark);
+            font-weight: 600;
+            padding: 15px 12px;
+            border: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            padding: 20px 12px;
+            vertical-align: middle;
+            border-color: #f8f9fa;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background: #f8f9fa;
+                transform: translateX(5px);
+            }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #f0f0f0;
+    }
+
+    .image-placeholder {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 1.5rem;
+        border: 2px dashed #dee2e6;
+    }
+
+    .item-info {
+        padding-left: 15px;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+    }
+
+    .item-description {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    .price-value {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.1rem;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-quantity {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid;
+        transition: all 0.3s ease;
+    }
+
+    .btn-decrease {
+        border-color: #dc3545;
+        color: #dc3545;
+        background: white;
+    }
+
+        .btn-decrease:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+    .btn-increase {
+        border-color: #198754;
+        color: #198754;
+        background: white;
+    }
+
+        .btn-increase:hover {
+            background: #198754;
+            color: white;
+        }
+
+    .quantity-display {
+        font-weight: 700;
+        color: var(--dark);
+        font-size: 1.1rem;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .subtotal-value {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.1rem;
+    }
+
+    .btn-remove {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .btn-remove:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            color: white;
+        }
+
+    .summary-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        border: 2px solid #e9ecef;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .summary-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .summary-value {
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .discount-alert {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        border: 1px solid #c3e6cb;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .total-row {
+        border-top: 2px solid var(--primary);
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+
+    .total-label {
+        font-size: 1.2rem;
+        color: var(--dark);
+        font-weight: 600;
+    }
+
+    .total-value {
+        font-size: 1.4rem;
+        color: var(--primary);
+        font-weight: 700;
+    }
+
+    .customer-form {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+        .form-label i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+        }
+
+    .btn-confirm {
+        background: linear-gradient(135deg, #198754, #157347);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+            color: white;
+        }
+
+    .btn-continue {
+        background: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-continue:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(197, 45, 47, 0.2);
+        }
+
+    .alert-info {
+        background: linear-gradient(135deg, #d1ecf1, #c6e9f1);
+        border: 1px solid #b8daff;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    @@media (max-width: 768px) {
+        .cart-body {
+            padding: 20px 15px;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .table tbody td {
+            display: block;
+            text-align: center;
+            padding: 10px 0;
+            border: none;
+        }
+
+            .table tbody td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--dark);
+                display: block;
+                margin-bottom: 5px;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+            }
+
+        .item-info {
+            padding-left: 0;
+            text-align: center;
+        }
+    }
+</style>
+
+<section class="cart-section">
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart
+        </h1>
+
+        @if (Model == null || !Model.OrderItems.Any())
+        {
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart empty-icon"></i>
+                <h3 class="text-muted mb-3">Your cart is empty!</h3>
+                <p class="text-muted mb-4">Browse our delicious menu and add items to get started.</p>
+                <a asp-controller="MenuItem" asp-action="Index" class="btn-continue">
+                    <i class="fas fa-arrow-left me-2"></i>Browse Menu
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="cart-card">
+                <div class="cart-header">
+                    <h4><i class="fas fa-bag-shopping me-2"></i>Order Items</h4>
+                </div>
+
+                <div class="cart-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%">Item</th>
+                                    <th style="width: 15%" class="text-center">Price</th>
+                                    <th style="width: 20%" class="text-center">Quantity</th>
+                                    <th style="width: 15%" class="text-center">Subtotal</th>
+                                    <th style="width: 10%" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td data-label="Item">
+                                            <div class="d-flex align-items-center">
+                                                @if (!string.IsNullOrEmpty(item.MenuItem.ImageUrl))
+                                                {
+                                                    <img src="~/images/@item.MenuItem.ImageUrl"
+                                                         class="item-image"
+                                                         alt="@item.MenuItem.Name" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="image-placeholder">
+                                                        <i class="fas fa-utensils"></i>
+                                                    </div>
+                                                }
+                                                <div class="item-info">
+                                                    <div class="item-name">@item.MenuItem.Name</div>
+                                                    <div class="item-description">@item.MenuItem.Description</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td data-label="Price" class="text-center">
+                                            <span class="price-value">$@item.UnitPrice.ToString("0.00")</span>
+                                        </td>
+                                        <td data-label="Quantity" class="text-center">
+                                            <div class="quantity-controls">
+                                                <a asp-action="DecreaseQuantity" asp-route-id="@item.Id"
+                                                   class="btn-quantity btn-decrease">
+                                                    <i class="fas fa-minus"></i>
+                                                </a>
+                                                <span class="quantity-display">@item.Quantity</span>
+                                                <a asp-action="IncreaseQuantity" asp-route-id="@item.Id"
+                                                   class="btn-quantity btn-increase">
+                                                    <i class="fas fa-plus"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td data-label="Subtotal" class="text-center">
+                                            <span class="subtotal-value">$@((item.Quantity * item.UnitPrice).ToString("0.00"))</span>
+                                        </td>
+                                        <td data-label="Actions" class="text-center">
+                                            <a asp-action="RemoveFromCart" asp-route-id="@item.Id"
+                                               class="btn-remove"
+                                               onclick="return confirm('Are you sure you want to remove this item?')">
+                                                <i class="fas fa-trash me-1"></i>Remove
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <div class="customer-form">
+                                <div class="mb-3">
+                                    <label for="customerName" class="form-label">
+                                        <i class="fas fa-user me-2"></i>Customer Name
+                                    </label>
+                                    <input type="text"
+                                           id="customerName"
+                                           class="form-control"
+                                           placeholder="Enter your full name"
+                                           required />
+                                </div>
+                                <button onclick="confirmOrder()" class="btn-confirm">
+                                    <i class="fas fa-check-circle me-2"></i>Confirm Order
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="summary-card">
+                                <div class="summary-row">
+                                    <span class="summary-label">Items:</span>
+                                    <span class="summary-value">@Model.OrderItems.Sum(oi => oi.Quantity)</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Subtotal:</span>
+                                    <span class="summary-value">$@Model.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice).ToString("0.00")</span>
+                                </div>
+
+                                @if (Model.DiscountAmount > 0)
+                                {
+                                    <div class="discount-alert">
+                                        <h5 class="text-success mb-2">
+                                            <i class="fas fa-tag me-2"></i>Discount Applied!
+                                        </h5>
+                                        <p class="mb-1">
+                                            <strong>-$@Model.DiscountAmount.ToString("0.00")</strong>
+                                        </p>
+                                        <small class="text-muted">@Model.DiscountDescription</small>
+                                    </div>
+                                }
+
+                                <div class="summary-row total-row">
+                                    <span class="total-label">Total:</span>
+                                    <span class="total-value">$@Model.TotalPrice.ToString("0.00")</span>
+                                </div>
+
+                                @if (TempData["InfoMessage"] != null)
+                                {
+                                    <div class="alert-info text-center mt-3">
+                                        @TempData["InfoMessage"]
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a asp-controller="MenuItem" asp-action="Index" class="btn-continue">
+                            <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script>
+    function confirmOrder() {
+        const name = document.getElementById('customerName').value.trim();
+
+        if (!name) {
+            alert('Please enter your name before confirming the order!');
+            document.getElementById('customerName').focus();
+            return;
+        }
+
+        if (confirm('Are you sure you want to confirm this order?')) {
+            window.location.href = '@Url.Action("ConfirmOrder")?id=@Model?.Id&customerName=' + encodeURIComponent(name);
+        }
+    }
+
+    document.getElementById('customerName')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            confirmOrder();
+        }
+    });
+</script>

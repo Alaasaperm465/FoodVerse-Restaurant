@@ -1,0 +1,744 @@
+﻿@model RestaurantManagement.ViewModel.MenuItemVM
+
+@{
+    ViewData["Title"] = "Edit Menu Item";
+}
+
+<style>
+    .edit-menu-section {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .menu-edit-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .menu-edit-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .menu-edit-header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+        .menu-edit-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+    .menu-edit-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+        animation: spin 3s linear infinite;
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .menu-edit-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    .menu-edit-subtitle {
+        opacity: 0.9;
+        margin: 8px 0 0;
+        font-size: 1rem;
+    }
+
+    .menu-edit-body {
+        padding: 40px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+        .form-label i {
+            color: var(--primary);
+            margin-right: 8px;
+            width: 20px;
+        }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 14px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #fafafa;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+            background: white;
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+            opacity: 0.7;
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+        font-weight: 500;
+        color: #dc3545 !important;
+    }
+
+    .validation-summary-errors {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+        color: #721c24;
+        grid-column: 1 / -1;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .current-image-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        border: 2px dashed #dee2e6;
+        text-align: center;
+    }
+
+    .current-image-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 15px;
+        display: block;
+        font-size: 1rem;
+    }
+
+    .current-image {
+        max-width: 250px;
+        max-height: 200px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border: 3px solid white;
+        transition: all 0.3s ease;
+    }
+
+        .current-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+    .no-image-placeholder {
+        width: 200px;
+        height: 150px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 2rem;
+        border: 2px dashed #dee2e6;
+        margin: 0 auto;
+    }
+
+    .file-upload-container {
+        position: relative;
+    }
+
+    .file-upload-label {
+        display: block;
+        padding: 20px;
+        border: 2px dashed #e9ecef;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #fafafa;
+    }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: rgba(197, 45, 47, 0.02);
+        }
+
+        .file-upload-label.dragover {
+            border-color: var(--primary);
+            background: rgba(197, 45, 47, 0.05);
+        }
+
+    .upload-icon {
+        font-size: 2rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .upload-text {
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .upload-hint {
+        font-size: 0.8rem;
+        color: #9ca3af;
+    }
+
+    .file-preview {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .preview-image {
+        max-width: 200px;
+        max-height: 150px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 2px solid #f0f0f0;
+    }
+
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px solid #e9ecef;
+    }
+
+    .toggle-label {
+        font-weight: 500;
+        color: var(--dark);
+        margin: 0;
+        flex: 1;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+    }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .toggle-slider {
+        background-color: var(--primary);
+    }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+    .toggle-status {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #6c757d;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    input:checked + .toggle-slider + .toggle-status {
+        color: var(--primary);
+    }
+
+    .price-container {
+        position: relative;
+    }
+
+    .price-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #198754;
+        font-weight: 600;
+    }
+
+    .price-input {
+        padding-left: 40px !important;
+    }
+
+    .time-container {
+        position: relative;
+    }
+
+    .time-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        margin-top: 30px;
+        grid-column: 1 / -1;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 35px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+            color: white;
+        }
+
+    .btn-cancel {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-cancel:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+    .form-helper {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+        display: block;
+    }
+
+    @@media (max-width: 768px) {
+        .menu-edit-container {
+            margin: 20px;
+        }
+
+        .menu-edit-body {
+            padding: 30px 25px;
+        }
+
+        .menu-edit-header {
+            padding: 25px 20px;
+        }
+
+        .menu-edit-title {
+            font-size: 1.6rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .btn-group {
+            flex-direction: column-reverse;
+        }
+
+        .btn-save, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .btn-loading {
+        position: relative;
+        color: transparent;
+    }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-right-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+    .char-counter {
+        text-align: right;
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+        .char-counter.warning {
+            color: #ffc107;
+        }
+
+        .char-counter.danger {
+            color: #dc3545;
+        }
+</style>
+
+<section class="edit-menu-section">
+    <div class="container">
+        <div class="menu-edit-container">
+            <div class="menu-edit-card">
+                <!-- Card Header -->
+                <div class="menu-edit-header">
+                    <i class="fas fa-edit menu-edit-icon"></i>
+                    <h1 class="menu-edit-title">Edit Menu Item</h1>
+                    <p class="menu-edit-subtitle">Update item information and settings</p>
+                </div>
+
+                <!-- Card Body -->
+                <div class="menu-edit-body">
+                    <form asp-action="Edit" enctype="multipart/form-data" id="menuEditForm">
+                        <div asp-validation-summary="All" class="validation-summary-errors"></div>
+
+                        <div class="current-image-section">
+                            <span class="current-image-label">
+                                <i class="fas fa-image me-2"></i>Current Image
+                            </span>
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" class="current-image" alt="@Model.Name" />
+                                <div class="form-helper mt-2">Current item image - Upload new image to replace</div>
+                            }
+                            else
+                            {
+                                <div class="no-image-placeholder">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="form-helper mt-2">No image currently set</div>
+                            }
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label asp-for="Name" class="form-label">
+                                    <i class="fas fa-tag"></i>Item Name
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="e.g., Margherita Pizza, Caesar Salad" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <div class="form-helper">Enter a descriptive name for your menu item</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Price" class="form-label">
+                                    <i class="fas fa-dollar-sign"></i>Price
+                                </label>
+                                <div class="price-container">
+                                    <span class="price-icon">$</span>
+                                    <input asp-for="Price" class="form-control price-input" placeholder="0.00" type="number" step="0.01" min="0" />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                                <div class="form-helper">Set the price for this menu item</div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label asp-for="Description" class="form-label">
+                                    <i class="fas fa-align-left"></i>Description
+                                </label>
+                                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe the ingredients, taste, and special features of this item..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <div class="char-counter" id="descCounter">@(Model.Description?.Length ?? 0)/500 characters</div>
+                                <div class="form-helper">Help customers understand what makes this item special</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="CategoryId" class="form-label">
+                                    <i class="fas fa-layer-group"></i>Category
+                                </label>
+                                <select asp-for="CategoryId" class="form-control" asp-items="Model.Categories">
+                                    <option value="">-- Select Category --</option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                <div class="form-helper">Choose the appropriate category for this item</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="PreparationTime" class="form-label">
+                                    <i class="fas fa-clock"></i>Preparation Time
+                                </label>
+                                <div class="time-container">
+                                    <input asp-for="PreparationTime" class="form-control" placeholder="e.g., 15, 30, 45" type="number" min="1" />
+                                    <span class="time-icon">minutes</span>
+                                </div>
+                                <span asp-validation-for="PreparationTime" class="text-danger"></span>
+                                <div class="form-helper">Estimated preparation time in minutes</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Instoke" class="form-label">
+                                    <i class="fas fa-boxes"></i>Stock Quantity
+                                </label>
+                                <input asp-for="Instoke" class="form-control" placeholder="e.g., 50, 100, 200" type="number" min="0" />
+                                <span asp-validation-for="Instoke" class="text-danger"></span>
+                                <div class="form-helper">Available quantity in stock</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="toggle-group">
+                                    <label class="toggle-label">
+                                        <i class="fas fa-power-off"></i>Availability
+                                    </label>
+                                    <label class="toggle-switch">
+                                        <input asp-for="IsAvailable" type="checkbox" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-status" id="statusText">
+                                        @(Model.IsAvailable ? "Available" : "Unavailable")
+                                    </span>
+                                </div>
+                                <div class="form-helper">Toggle to make this item available for ordering</div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    <i class="fas fa-image"></i>New Item Image (Optional)
+                                </label>
+                                <div class="file-upload-container">
+                                    <label for="ImageFile" class="file-upload-label" id="fileUploadLabel">
+                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                        <div class="upload-text">Click to upload or drag and drop</div>
+                                        <div class="upload-hint">PNG, JPG, JPEG up to 5MB - Leave empty to keep current image</div>
+                                    </label>
+                                    <input asp-for="ImageFile" type="file" class="d-none" accept="image/*" id="ImageFile" />
+                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                                    <div class="file-preview" id="filePreview" style="display: none;">
+                                        <img id="previewImage" class="preview-image" src="" alt="Preview" />
+                                        <div class="form-helper mt-2">New image preview - This will replace the current image</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <a asp-action="Index" class="btn-cancel">
+                                <i class="fas fa-times"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn-save" id="saveBtn">
+                                <i class="fas fa-save"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const fileInput = document.getElementById('ImageFile');
+        const fileUploadLabel = document.getElementById('fileUploadLabel');
+        const filePreview = document.getElementById('filePreview');
+        const previewImage = document.getElementById('previewImage');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    filePreview.style.display = 'block';
+                    fileUploadLabel.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                filePreview.style.display = 'none';
+                fileUploadLabel.style.display = 'block';
+            }
+        });
+
+        fileUploadLabel.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadLabel.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadLabel.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        fileUploadLabel.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        document.getElementById('Description').addEventListener('input', function() {
+            const length = this.value.length;
+            const counter = document.getElementById('descCounter');
+            counter.textContent = `${length}/500 characters`;
+
+            if (length > 450) {
+                counter.classList.add('warning');
+                counter.classList.remove('danger');
+            } else if (length > 480) {
+                counter.classList.remove('warning');
+                counter.classList.add('danger');
+            } else {
+                counter.classList.remove('warning', 'danger');
+            }
+        });
+
+        document.getElementById('IsAvailable').addEventListener('change', function() {
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = this.checked ? 'Available' : 'Unavailable';
+            statusText.style.color = this.checked ? '#198754' : '#6c757d';
+        });
+
+        document.getElementById('menuEditForm').addEventListener('submit', function(e) {
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
+
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            saveBtn.disabled = true;
+
+            setTimeout(() => {
+                if (saveBtn.disabled) {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                }
+            }, 5000);
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('Name').focus();
+
+            const isAvailable = document.getElementById('IsAvailable').checked;
+            const statusText = document.getElementById('statusText');
+            statusText.style.color = isAvailable ? '#198754' : '#6c757d';
+        });
+
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+}
