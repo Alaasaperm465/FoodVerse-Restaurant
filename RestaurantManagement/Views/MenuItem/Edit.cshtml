@@ -496,25 +496,35 @@
 
                 <!-- Card Body -->
                 <div class="menu-edit-body">
-                    <form asp-action="Edit" enctype="multipart/form-data" id="menuEditForm">
+                    <form asp-action="Edit" enctype="multipart/form-data" id="menuEditForm" >
                         <div asp-validation-summary="All" class="validation-summary-errors"></div>
-
                         <div class="current-image-section">
                             <span class="current-image-label">
-                                <i class="fas fa-image me-2"></i>Current Image
+                                <i class="fas fa-image me-2"></i>Current / New Image
                             </span>
-                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                            {
-                                <img src="@Model.ImageUrl" class="current-image" alt="@Model.Name" />
-                                <div class="form-helper mt-2">Current item image - Upload new image to replace</div>
-                            }
-                            else
-                            {
-                                <div class="no-image-placeholder">
-                                    <i class="fas fa-camera"></i>
-                                </div>
-                                <div class="form-helper mt-2">No image currently set</div>
-                            }
+
+                            <div class="image-upload-container text-center">
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                {
+                                    <img id="previewImage" src="@Model.ImageUrl" class="current-image mb-3" alt="@Model.Name" />
+                                    <div class="form-helper mb-3">Current item image - Upload new one to replace it</div>
+                                }
+                                else
+                                {
+                                    <div class="no-image-placeholder mb-3">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <div class="form-helper mb-3">No image currently set</div>
+                                }
+
+                                <label for="ImageFile" class="file-upload-label" id="fileUploadLabel">
+                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                    <div class="upload-text">Click to upload or drag and drop</div>
+                                    <div class="upload-hint">PNG, JPG, JPEG up to 5MB</div>
+                                </label>
+                                <input asp-for="ImageFile" type="file" class="d-none" accept="image/*" id="ImageFile" />
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            </div>
                         </div>
 
                         <div class="form-grid">
@@ -597,25 +607,7 @@
                                 <div class="form-helper">Toggle to make this item available for ordering</div>
                             </div>
 
-                            <div class="form-group full-width">
-                                <label class="form-label">
-                                    <i class="fas fa-image"></i>New Item Image (Optional)
-                                </label>
-                                <div class="file-upload-container">
-                                    <label for="ImageFile" class="file-upload-label" id="fileUploadLabel">
-                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                                        <div class="upload-text">Click to upload or drag and drop</div>
-                                        <div class="upload-hint">PNG, JPG, JPEG up to 5MB - Leave empty to keep current image</div>
-                                    </label>
-                                    <input asp-for="ImageFile" type="file" class="d-none" accept="image/*" id="ImageFile" />
-                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
-
-                                    <div class="file-preview" id="filePreview" style="display: none;">
-                                        <img id="previewImage" class="preview-image" src="" alt="Preview" />
-                                        <div class="form-helper mt-2">New image preview - This will replace the current image</div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <div class="btn-group">

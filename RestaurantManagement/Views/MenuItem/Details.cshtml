@@ -446,7 +446,7 @@
                         <div class="image-section">
                             @if (!string.IsNullOrEmpty(Model.ImageUrl))
                             {
-                                <img src="~/images/@Model.ImageUrl" class="item-image" alt="@Model.Name" />
+                                <img src="@Url.Content(Model.ImageUrl)" class="item-image" alt="@Model.Name" />
                             }
                             else
                             {

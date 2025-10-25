@@ -128,6 +128,7 @@ namespace RestaurantManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, MenuItemVM model)
         {
             if (!ModelState.IsValid)
@@ -140,17 +141,13 @@ namespace RestaurantManagement.Controllers
             if (menuItem == null)
                 return NotFound();
 
-            // 🔹 لو المستخدم رفع صورة جديدة
             if (model.ImageFile != null && model.ImageFile.Length > 0)
             {
-                // حذف الصورة القديمة من المجلد (لو موجودة)
                 if (!string.IsNullOrEmpty(menuItem.ImageUrl))
                 {
                     string oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", menuItem.ImageUrl.TrimStart('/'));
                     if (System.IO.File.Exists(oldImagePath))
-                    {
                         System.IO.File.Delete(oldImagePath);
-                    }
                 }
 
                 string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/menu");
@@ -180,6 +177,7 @@ namespace RestaurantManagement.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
 
 

@@ -134,7 +134,7 @@ namespace RestaurantManagement
             }
             else
             {
-                Console.WriteLine("ℹ️ Admin user already exists.");
+                Console.WriteLine(" Admin user already exists.");
             }
         }
     }

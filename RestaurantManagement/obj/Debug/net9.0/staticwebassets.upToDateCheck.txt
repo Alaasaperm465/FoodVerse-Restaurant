@@ -64,8 +64,27 @@ F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\wwwroot\lib\b
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\cocacola.webp
+wwwroot\images\img_1.jpg
+wwwroot\images\img_10.jpg
+wwwroot\images\img_11.webp
+wwwroot\images\img_12.jpg
+wwwroot\images\img_2.jpg
+wwwroot\images\img_3.webp
+wwwroot\images\img_33.jpg
+wwwroot\images\img_4.jpg
+wwwroot\images\img_5.jpg
+wwwroot\images\img_6.jpg
+wwwroot\images\img_7.webp
+wwwroot\images\img_8.jpg
+wwwroot\images\img_9.jpg
 wwwroot\images\menu\19a7dcf0-54f7-453d-9a4e-ac3150329e3f.jpg
+wwwroot\images\menu\2467a790-1a17-492e-bc3d-eecedb61c894.jpg
 wwwroot\images\menu\5a9d1e4a-c714-42bd-8974-3f6e00c51b02.jpg
+wwwroot\images\menu\c01da39e-0f84-4d23-9180-3052cd6c4cda.jpg
+wwwroot\images\menu\d7ebf24b-7d87-40b1-870b-c2d4d3310539.webp
+wwwroot\images\menu\ebaedcdc-fc1e-48c0-9e90-3545419976e9.webp
+wwwroot\images\menu\f23abf6b-dbd8-4155-8f25-e37e2c976279.webp
 wwwroot\images\res1.jpg
 wwwroot\images\res2.jpg
 wwwroot\images\res3.jpg

@@ -243,8 +243,8 @@
                 <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
                     <div class="menu-card">
                         <div class="card-img-container">
-                            <img src="~/images/@item.ImageUrl" class="card-img-top" alt="@item.Name">
-                            @if (item.Price > 25) 
+                            <img src="@Url.Content(item.ImageUrl)" class="item-image" alt="@item.Name" />
+                            @if (item.Price > 25)
                             {
                                 <span class="special-badge">
                                     <i class="fas fa-star me-1"></i>Chef's Special
@@ -280,7 +280,6 @@
     </div>
 </div>
 
-<!-- Features Section -->
 <section class="py-5 bg-light mt-5">
     <div class="container">
         <div class="row text-center">
@@ -310,23 +309,17 @@
 </section>
 
 <script>
-    // تأثيرات تفاعلية للفلاتر
     document.addEventListener('DOMContentLoaded', function() {
         const categoryBtns = document.querySelectorAll('.category-btn');
         
         categoryBtns.forEach(btn => {
             btn.addEventListener('click', function() {
-                // إزالة النشاط من جميع الأزرار
                 categoryBtns.forEach(b => b.classList.remove('active'));
-                // إضافة النشاط للزر المختار
                 this.classList.add('active');
                 
-                // هنا يمكن إضافة كود تصفية العناصر حسب التصنيف
-                // filterMenuItems(this.textContent.trim());
             });
         });
         
-        // تأثيرات scroll للروابط
         document.querySelector('a[href="#menu"]').addEventListener('click', function(e) {
             e.preventDefault();
             document.querySelector('#menu').scrollIntoView({

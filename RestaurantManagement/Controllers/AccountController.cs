@@ -88,7 +88,7 @@ namespace RestaurantManagement.Controllers
             return RedirectToAction("Login");
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult addAdmin()
         {
             return View();
