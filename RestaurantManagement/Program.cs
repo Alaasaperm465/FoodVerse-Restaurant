@@ -11,14 +11,14 @@ namespace RestaurantManagement
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-             
+
             // 1️⃣ تسجيل DbContext
             builder.Services.AddDbContext<RestaurantContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -30,11 +30,12 @@ namespace RestaurantManagement
             });
 
             // 2️⃣ تسجيل Generic Repository
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option=>
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option =>
             {
-                option.Password.RequireUppercase= false;
-                option.Password.RequireNonAlphanumeric= false;
+                option.Password.RequireUppercase = false;
+                option.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<RestaurantContext>();    //it make injection for UserManager and RoleManager
+
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped(typeof(IServices<>), typeof(Services<>));
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -49,7 +50,7 @@ namespace RestaurantManagement
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5); 
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 options.LoginPath = "/Account/Login";
                 options.SlidingExpiration = true;
             });
@@ -79,7 +80,62 @@ namespace RestaurantManagement
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await SeedAdminAsync(services);
+            }
+
             app.Run();
+        }
+
+
+        private static async Task SeedAdminAsync(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string adminRole = "Admin";
+            string adminUserName = "alaa";
+            string adminEmail = "alaa@gmail.com";
+            string adminPassword = "Alaa_123"; // تقدر تغيّرها لو عايز
+
+            // 1️⃣ إنشاء الرول لو مش موجود
+            if (!await roleManager.RoleExistsAsync(adminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(adminRole));
+            }
+
+            // 2️⃣ إنشاء اليوزر لو مش موجود
+            var existingAdmin = await userManager.FindByNameAsync(adminUserName);
+            if (existingAdmin == null)
+            {
+                var adminUser = new ApplicationUser
+                {
+                    UserName = adminUserName,
+                    Email = adminEmail,
+                    Address = "Main Branch",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(adminUser, adminPassword);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, adminRole);
+                    Console.WriteLine(" Admin user created and assigned to Admin role.");
+                }
+                else
+                {
+                    Console.WriteLine(" Failed to create admin user: " +
+                        string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
+            }
+            else
+            {
+                Console.WriteLine("ℹ️ Admin user already exists.");
+            }
         }
     }
 }

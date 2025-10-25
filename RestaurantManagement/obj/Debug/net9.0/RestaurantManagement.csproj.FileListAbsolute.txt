@@ -318,3 +318,4 @@ F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\bin\Debug\net
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\RestaurantManagement\obj\Debug\net9.0\RestaurantManagement.sourcelink.json

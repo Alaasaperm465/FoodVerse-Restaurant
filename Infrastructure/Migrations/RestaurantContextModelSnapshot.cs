@@ -263,53 +263,63 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 101,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "All types of pizza",
+                            Description = "Juicy grilled burgers with fresh ingredients.",
                             DisplayOrder = 1,
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Pizza"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Juicy grilled burgers",
-                            DisplayOrder = 2,
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Burgers"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 102,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Italian pasta dishes",
+                            Description = "Tasty sandwiches made with quality bread and fillings.",
+                            DisplayOrder = 2,
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Sandwiches"
+                        },
+                        new
+                        {
+                            Id = 103,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Premium beef steaks cooked to perfection.",
                             DisplayOrder = 3,
                             IsActive = true,
                             IsDeleted = false,
-                            Name = "Pasta"
+                            Name = "Steaks"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 104,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Soft drinks and beverages",
+                            Description = "Crispy and grilled chicken dishes served hot.",
                             DisplayOrder = 4,
                             IsActive = true,
                             IsDeleted = false,
-                            Name = "Drinks"
+                            Name = "Chicken Meals"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 105,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Sweet desserts",
+                            Description = "Sweet treats and baked delights to end your meal.",
                             DisplayOrder = 5,
                             IsActive = true,
                             IsDeleted = false,
                             Name = "Desserts"
+                        },
+                        new
+                        {
+                            Id = 106,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Refreshing cold and hot beverages for every taste.",
+                            DisplayOrder = 6,
+                            IsActive = true,
+                            IsDeleted = false,
+                            Name = "Drinks"
                         });
                 });
 
@@ -366,94 +376,159 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            CategoryId = 1,
+                            Id = 201,
+                            CategoryId = 101,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Classic cheese pizza",
-                            Instoke = 0,
+                            Description = "Grilled beef patty with cheese and lettuce.",
+                            Instoke = 25,
                             IsAvailable = true,
                             IsDeleted = false,
-                            Name = "Margherita Pizza",
-                            PreparationTime = 0,
-                            Price = 120m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Spicy pepperoni and cheese",
-                            Instoke = 0,
-                            IsAvailable = true,
-                            IsDeleted = false,
-                            Name = "Pepperoni Pizza",
-                            PreparationTime = 0,
-                            Price = 140m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Grilled beef patty with cheese",
-                            Instoke = 0,
-                            IsAvailable = true,
-                            IsDeleted = false,
-                            Name = "Beef Burger",
-                            PreparationTime = 0,
+                            Name = "Classic Beef Burger",
+                            PreparationTime = 15,
                             Price = 110m
                         },
                         new
                         {
-                            Id = 4,
-                            CategoryId = 2,
+                            Id = 202,
+                            CategoryId = 101,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Grilled chicken sandwich",
-                            Instoke = 0,
+                            Description = "Beef burger with double cheese.",
+                            Instoke = 20,
                             IsAvailable = true,
                             IsDeleted = false,
-                            Name = "Chicken Burger",
-                            PreparationTime = 0,
-                            Price = 100m
+                            Name = "Cheese Burger",
+                            PreparationTime = 15,
+                            Price = 120m
                         },
                         new
                         {
-                            Id = 5,
-                            CategoryId = 3,
+                            Id = 203,
+                            CategoryId = 102,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Creamy pasta with chicken",
-                            Instoke = 0,
+                            Description = "Triple-layer sandwich with chicken and bacon.",
+                            Instoke = 30,
                             IsAvailable = true,
                             IsDeleted = false,
-                            Name = "Fettuccine Alfredo",
-                            PreparationTime = 0,
+                            Name = "Club Sandwich",
+                            PreparationTime = 10,
+                            Price = 90m
+                        },
+                        new
+                        {
+                            Id = 204,
+                            CategoryId = 102,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fresh tuna with lettuce and mayo.",
+                            Instoke = 30,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Tuna Sandwich",
+                            PreparationTime = 10,
+                            Price = 85m
+                        },
+                        new
+                        {
+                            Id = 205,
+                            CategoryId = 103,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tender and juicy ribeye grilled to perfection.",
+                            Instoke = 10,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Ribeye Steak",
+                            PreparationTime = 25,
+                            Price = 250m
+                        },
+                        new
+                        {
+                            Id = 206,
+                            CategoryId = 103,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Classic T-bone steak with herbs.",
+                            Instoke = 8,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "T-Bone Steak",
+                            PreparationTime = 25,
+                            Price = 270m
+                        },
+                        new
+                        {
+                            Id = 207,
+                            CategoryId = 104,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Grilled chicken breast with seasoning.",
+                            Instoke = 15,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Grilled Chicken",
+                            PreparationTime = 20,
                             Price = 130m
                         },
                         new
                         {
-                            Id = 6,
-                            CategoryId = 4,
+                            Id = 208,
+                            CategoryId = 104,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Cold drink",
-                            Instoke = 0,
+                            Description = "Crispy fried chicken pieces.",
+                            Instoke = 18,
                             IsAvailable = true,
                             IsDeleted = false,
-                            Name = "Coca Cola",
-                            PreparationTime = 0,
+                            Name = "Fried Chicken",
+                            PreparationTime = 20,
+                            Price = 120m
+                        },
+                        new
+                        {
+                            Id = 209,
+                            CategoryId = 105,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Rich chocolate layered cake.",
+                            Instoke = 10,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Chocolate Cake",
+                            PreparationTime = 5,
+                            Price = 70m
+                        },
+                        new
+                        {
+                            Id = 210,
+                            CategoryId = 105,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Creamy baked cheesecake with topping.",
+                            Instoke = 8,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Cheesecake",
+                            PreparationTime = 5,
+                            Price = 80m
+                        },
+                        new
+                        {
+                            Id = 211,
+                            CategoryId = 106,
+                            CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Cold refreshing soda.",
+                            Instoke = 50,
+                            IsAvailable = true,
+                            IsDeleted = false,
+                            Name = "Coca-Cola",
+                            PreparationTime = 1,
                             Price = 25m
                         },
                         new
                         {
-                            Id = 7,
-                            CategoryId = 5,
+                            Id = 212,
+                            CategoryId = 106,
                             CreatedAt = new DateTime(2025, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Rich chocolate dessert",
-                            Instoke = 0,
+                            Description = "Hot milk coffee drink.",
+                            Instoke = 20,
                             IsAvailable = true,
                             IsDeleted = false,
-                            Name = "Chocolate Cake",
-                            PreparationTime = 0,
-                            Price = 70m
+                            Name = "Latte",
+                            PreparationTime = 5,
+                            Price = 45m
                         });
                 });
 

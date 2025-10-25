@@ -61,27 +61,45 @@ namespace Application.Context
 
         modelBuilder.Entity<MenuItem>().Property(m => m.Price).HasColumnType("decimal(18,2)");
 
-            
+
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Pizza", Description = "All types of pizza", DisplayOrder = 1, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new Category { Id = 2, Name = "Burgers", Description = "Juicy grilled burgers", DisplayOrder = 2, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new Category { Id = 3, Name = "Pasta", Description = "Italian pasta dishes", DisplayOrder = 3, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new Category { Id = 4, Name = "Drinks", Description = "Soft drinks and beverages", DisplayOrder = 4, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new Category { Id = 5, Name = "Desserts", Description = "Sweet desserts", DisplayOrder = 5, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) }
+                new Category { Id = 101, Name = "Burgers", Description = "Juicy grilled burgers with fresh ingredients.", DisplayOrder = 1, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
+                new Category { Id = 102, Name = "Sandwiches", Description = "Tasty sandwiches made with quality bread and fillings.", DisplayOrder = 2, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
+                new Category { Id = 103, Name = "Steaks", Description = "Premium beef steaks cooked to perfection.", DisplayOrder = 3, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
+                new Category { Id = 104, Name = "Chicken Meals", Description = "Crispy and grilled chicken dishes served hot.", DisplayOrder = 4, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
+                new Category { Id = 105, Name = "Desserts", Description = "Sweet treats and baked delights to end your meal.", DisplayOrder = 5, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) },
+                new Category { Id = 106, Name = "Drinks", Description = "Refreshing cold and hot beverages for every taste.", DisplayOrder = 6, IsActive = true, CreatedAt = new DateTime(2025, 10, 10) }
             );
 
 
             modelBuilder.Entity<MenuItem>().HasData(
-                new MenuItem { Id = 1, Name = "Margherita Pizza", Description = "Classic cheese pizza", Price = 120, CategoryId = 1, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 2, Name = "Pepperoni Pizza", Description = "Spicy pepperoni and cheese", Price = 140, CategoryId = 1, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 3, Name = "Beef Burger", Description = "Grilled beef patty with cheese", Price = 110, CategoryId = 2, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 4, Name = "Chicken Burger", Description = "Grilled chicken sandwich", Price = 100, CategoryId = 2, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 5, Name = "Fettuccine Alfredo", Description = "Creamy pasta with chicken", Price = 130, CategoryId = 3, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 6, Name = "Coca Cola", Description = "Cold drink", Price = 25, CategoryId = 4, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) },
-                new MenuItem { Id = 7, Name = "Chocolate Cake", Description = "Rich chocolate dessert", Price = 70, CategoryId = 5, IsAvailable = true, CreatedAt = new DateTime(2025, 10, 10) }
+                // Burgers
+                new MenuItem { Id = 201, Name = "Classic Beef Burger", Description = "Grilled beef patty with cheese and lettuce.", Price = 110, CategoryId = 101, IsAvailable = true, Instoke = 25, PreparationTime = 15, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 202, Name = "Cheese Burger", Description = "Beef burger with double cheese.", Price = 120, CategoryId = 101, IsAvailable = true, Instoke = 20, PreparationTime = 15, CreatedAt = new DateTime(2025, 10, 10) },
+
+                // Sandwiches
+                new MenuItem { Id = 203, Name = "Club Sandwich", Description = "Triple-layer sandwich with chicken and bacon.", Price = 90, CategoryId = 102, IsAvailable = true, Instoke = 30, PreparationTime = 10, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 204, Name = "Tuna Sandwich", Description = "Fresh tuna with lettuce and mayo.", Price = 85, CategoryId = 102, IsAvailable = true, Instoke = 30, PreparationTime = 10, CreatedAt = new DateTime(2025, 10, 10) },
+
+                // Steaks
+                new MenuItem { Id = 205, Name = "Ribeye Steak", Description = "Tender and juicy ribeye grilled to perfection.", Price = 250, CategoryId = 103, IsAvailable = true, Instoke = 10, PreparationTime = 25, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 206, Name = "T-Bone Steak", Description = "Classic T-bone steak with herbs.", Price = 270, CategoryId = 103, IsAvailable = true, Instoke = 8, PreparationTime = 25, CreatedAt = new DateTime(2025, 10, 10) },
+
+                // Chicken Meals
+                new MenuItem { Id = 207, Name = "Grilled Chicken", Description = "Grilled chicken breast with seasoning.", Price = 130, CategoryId = 104, IsAvailable = true, Instoke = 15, PreparationTime = 20, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 208, Name = "Fried Chicken", Description = "Crispy fried chicken pieces.", Price = 120, CategoryId = 104, IsAvailable = true, Instoke = 18, PreparationTime = 20, CreatedAt = new DateTime(2025, 10, 10) },
+
+                // Desserts
+                new MenuItem { Id = 209, Name = "Chocolate Cake", Description = "Rich chocolate layered cake.", Price = 70, CategoryId = 105, IsAvailable = true, Instoke = 10, PreparationTime = 5, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 210, Name = "Cheesecake", Description = "Creamy baked cheesecake with topping.", Price = 80, CategoryId = 105, IsAvailable = true, Instoke = 8, PreparationTime = 5, CreatedAt = new DateTime(2025, 10, 10) },
+
+                // Drinks
+                new MenuItem { Id = 211, Name = "Coca-Cola", Description = "Cold refreshing soda.", Price = 25, CategoryId = 106, IsAvailable = true, Instoke = 50, PreparationTime = 1, CreatedAt = new DateTime(2025, 10, 10) },
+                new MenuItem { Id = 212, Name = "Latte", Description = "Hot milk coffee drink.", Price = 45, CategoryId = 106, IsAvailable = true, Instoke = 20, PreparationTime = 5, CreatedAt = new DateTime(2025, 10, 10) }
             );
+
         }
-         
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries<BaseEntity>())
