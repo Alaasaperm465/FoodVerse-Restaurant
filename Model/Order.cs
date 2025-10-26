@@ -28,14 +28,9 @@ namespace RestaurantManagement.Models
         public string OrderNumber { get; set; }
 
         [Required]
-        public string UserId { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public virtual ApplicationUser User { get; set; }
-
-        [Required]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
+        public DateTime? EstimatedDeliveryTime { get; set; } 
         [Required]
         [Range(0, double.MaxValue)]
         public decimal TotalPrice { get; set; }
@@ -52,5 +47,11 @@ namespace RestaurantManagement.Models
 
         [StringLength(100)]
         public string? DiscountDescription { get; set; }
+        public OrderType OrderType { get; set; }  
+        public string? DeliveryAddress { get; set; }
+        public string UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public virtual ApplicationUser User { get; set; }
     }
 }

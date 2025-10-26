@@ -211,15 +211,23 @@ namespace RestaurantManagement.Controllers
             }
             return RedirectToAction("Cart");
         }
-        [HttpGet]
-        public async Task<IActionResult> ConfirmOrder(int id, string customerName)
+        //[HttpPost]
+        public async Task<IActionResult> ConfirmOrder(int id, string customerName, OrderType orderType = OrderType.DineIn, string deliveryAddress = null)
         {
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.MenuItem)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
                 return NotFound();
+
+            // لو الطلب Delivery لازم العنوان
+            if (orderType == OrderType.Delivery && string.IsNullOrWhiteSpace(deliveryAddress))
+            {
+                TempData["ErrorMessage"] = "Delivery address is required for delivery orders.";
+                return RedirectToAction("Cart");
+            }
 
             var total = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
 
@@ -231,12 +239,30 @@ namespace RestaurantManagement.Controllers
             order.Status = OrderStatus.Confirmed.ToString();
             order.OrderDate = DateTime.Now;
             order.Notes = $"Customer Name: {customerName}";
+            order.OrderType = orderType;
+            if (orderType == OrderType.Delivery)
+            {
+                order.DeliveryAddress = deliveryAddress;
+                // حساب أقصى وقت تحضير من العناصر
+                int maxPrep = 0;
+                foreach (var oi in order.OrderItems)
+                {
+                    var prep = oi.MenuItem?.PreparationTime ?? 0; // غيّر الاسم لو عندك اسم مختلف
+                    if (prep > maxPrep) maxPrep = prep;
+                }
+                order.EstimatedDeliveryTime = DateTime.UtcNow.AddMinutes(maxPrep + 30);
+            }
+            else
+            {
+                order.DeliveryAddress = null;
+                order.OrderDate = DateTime.UtcNow;
+            }
 
             _context.Update(order);
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = discountResult.DiscountAmount > 0
-                ? $" Discount Applied: {discountResult.DiscountDescription}"
+                ? $"Discount Applied: {discountResult.DiscountDescription}"
                 : "Order confirmed successfully!";
 
             return RedirectToAction("OrderConfirmed");
@@ -269,6 +295,8 @@ namespace RestaurantManagement.Controllers
 
             return (total, discountAmount, description);
         }
+        //[HttpGet]
+
         public IActionResult OrderConfirmed()
         {
             return View();
@@ -295,6 +323,13 @@ namespace RestaurantManagement.Controllers
 
             if (order == null)
                 return NotFound();
+
+            // منع الإلغاء لو الحالة Ready أو Completed (Delivered)
+            if (order.Status == OrderStatus.Ready.ToString() || order.Status == OrderStatus.Completed.ToString())
+            {
+                TempData["ErrorMessage"] = "You cannot cancel an order that is Ready or Delivered.";
+                return RedirectToAction("MyOrders");
+            }
 
             if (order.Status != OrderStatus.Pending.ToString())
             {

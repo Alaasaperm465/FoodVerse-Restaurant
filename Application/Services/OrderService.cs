@@ -16,9 +16,13 @@ namespace Application.Services
             _menuItemService = menuItemService;
         }
 
-        public async ValueTask<Order> CreateOrderAsync(string userId, List<OrderItem> orderItems, string notes = null)
+        public async ValueTask<Order> CreateOrderAsync(string userId, List<OrderItem> orderItems, string notes = null, OrderType orderType = OrderType.DineIn, string deliveryAddress = null)
         {
             if (string.IsNullOrEmpty(userId) || orderItems == null || !orderItems.Any())
+                return null;
+
+            // إذا النوع Delivery لازم عنوان
+            if (orderType == OrderType.Delivery && string.IsNullOrWhiteSpace(deliveryAddress))
                 return null;
 
             foreach (var item in orderItems)
@@ -34,11 +38,34 @@ namespace Application.Services
             }
 
             var totalPrice = await CalculateOrderTotalAsync(orderItems);
-
             var discountResult = ApplyDiscounts(totalPrice);
             totalPrice = discountResult.FinalTotal;
             var discountAmount = discountResult.DiscountAmount;
             var discountDescription = discountResult.DiscountDescription;
+
+            // حساب أقصى وقت تحضير من المينيو آيتمز
+            int maxPrepMinutes = 0;
+            foreach (var it in orderItems)
+            {
+                var menuItem = await _menuItemService.GetByIdAsync(it.MenuItemId);
+                // افتراض: حقل PreparationTimeMinutes موجود في MenuItem (غير الاسم لو عندك اسم مختلف)
+                var prep = 0;
+                if (menuItem != null)
+                {
+                    // حاول قراءة حقل PreparationTimeMinutes أو أي اسم عندك
+                    // إذا حقل غير موجود اختر 0
+                    prep = menuItem.PreparationTime; 
+                }
+
+                if (prep > maxPrepMinutes) maxPrepMinutes = prep;
+            }
+
+            DateTime? estimatedDeliveryAt = null;
+            if (orderType == OrderType.Delivery)
+            {
+                // estimated = now + maxPrep + 30 minutes
+                estimatedDeliveryAt = DateTime.UtcNow.AddMinutes(maxPrepMinutes + 30);
+            }
 
             var order = new Order
             {
@@ -50,7 +77,9 @@ namespace Application.Services
                 DiscountDescription = discountDescription,
                 Status = OrderStatus.Pending.ToString(),
                 Notes = notes,
-                OrderItems = orderItems
+                OrderItems = orderItems,
+                OrderType = orderType,
+                DeliveryAddress = orderType == OrderType.Delivery ? deliveryAddress : null,
             };
             var createdOrder = await _orderRepo.AddAsync(order);
 
@@ -66,6 +95,7 @@ namespace Application.Services
 
             return createdOrder;
         }
+
         private (decimal FinalTotal, decimal DiscountAmount, string DiscountDescription) ApplyDiscounts(decimal total)
         {
             var currentTime = DateTime.Now.TimeOfDay;
@@ -115,7 +145,6 @@ namespace Application.Services
         {
             return await _orderRepo.GetOrderWithDetailsAsync(orderId);
         }
-
         public async ValueTask<bool> UpdateOrderStatusAsync(int orderId, string newStatus)
         {
             var order = await _orderRepo.GetByIdAsync(orderId);
@@ -141,14 +170,14 @@ namespace Application.Services
 
             return true;
         }
-
         public async ValueTask<bool> CancelOrderAsync(int orderId)
         {
             var order = await _orderRepo.GetOrderWithDetailsAsync(orderId);
             if (order == null)
                 return false;
 
-            if (order.Status == OrderStatus.Completed.ToString())
+            // لا يمكن الإلغاء لو جاهز أو مكتمل (Delivered ~= Completed)
+            if (order.Status == OrderStatus.Ready.ToString() || order.Status == OrderStatus.Completed.ToString())
                 return false;
 
             if (order.OrderItems != null && order.OrderItems.Any())
@@ -170,6 +199,7 @@ namespace Application.Services
 
             return true;
         }
+
         public async ValueTask<decimal> CalculateOrderTotalAsync(List<OrderItem> orderItems)
         {
             if (orderItems == null || !orderItems.Any())

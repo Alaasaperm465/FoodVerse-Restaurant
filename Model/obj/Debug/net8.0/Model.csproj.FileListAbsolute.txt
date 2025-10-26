@@ -10,3 +10,4 @@ F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.dll
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\refint\Model.dll
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.pdb
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\ref\Model.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Model\obj\Debug\net8.0\Model.sourcelink.json

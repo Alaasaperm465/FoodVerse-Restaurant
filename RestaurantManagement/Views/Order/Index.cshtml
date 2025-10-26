@@ -5,222 +5,52 @@
 }
 
 <style>
-    .orders-management-section {
+    .orders-section {
         background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
         min-height: calc(100vh - 80px);
         padding: 40px 0;
         margin-top: -30px;
     }
 
+    .page-header {
+        background: linear-gradient(135deg, #1976d2, #1565c0);
+        color: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ffd54f;
+        }
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+    }
+
     .page-title {
         font-family: 'Playfair Display', serif;
         font-weight: 700;
-        color: var(--primary);
-        text-align: center;
-        margin-bottom: 40px;
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 8px;
     }
 
-    .orders-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        border: none;
-        overflow: hidden;
-    }
-
-    .card-header-custom {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        padding: 25px 30px;
-        border: none;
-    }
-
-        .card-header-custom h2 {
-            margin: 0;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-size: 1.5rem;
-        }
-
-    .table-container {
-        padding: 0;
-    }
-
-    .table {
-        margin: 0;
-        border: none;
-    }
-
-        .table thead th {
-            background: #f8f9fa;
-            color: var(--dark);
-            font-weight: 600;
-            padding: 20px 15px;
-            border: none;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .table tbody td {
-            padding: 20px 15px;
-            vertical-align: middle;
-            border-color: #f8f9fa;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-        }
-
-            .table tbody tr:hover {
-                background: #f8f9fa;
-                transform: translateX(5px);
-            }
-
-    .customer-name {
-        font-weight: 600;
-        color: var(--dark);
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .order-date {
-        color: #666;
-        font-weight: 500;
-    }
-
-    .total-price {
-        font-weight: 700;
-        color: var(--primary);
+    .page-subtitle {
+        opacity: 0.9;
         font-size: 1.1rem;
+        margin-bottom: 0;
     }
 
-    .status-badge {
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .status-pending {
-        background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
-        border: 1px solid rgba(255, 193, 7, 0.2);
-    }
-
-    .status-confirmed {
-        background: rgba(25, 135, 84, 0.1);
-        color: #198754;
-        border: 1px solid rgba(25, 135, 84, 0.2);
-    }
-
-    .status-completed {
-        background: rgba(111, 66, 193, 0.1);
-        color: #6f42c1;
-        border: 1px solid rgba(111, 66, 193, 0.2);
-    }
-
-    .status-cancelled {
-        background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-        border: 1px solid rgba(220, 53, 69, 0.2);
-    }
-
-    .status-preparing {
-        background: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-        border: 1px solid rgba(13, 110, 253, 0.2);
-    }
-
-    .btn-details {
-        background: linear-gradient(135deg, #0dcaf0, #0baccc);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-        .btn-details:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
-            color: white;
-        }
-
-    .status-form {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .status-select {
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        background: #fafafa;
-        min-width: 120px;
-    }
-
-        .status-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
-            background: white;
-        }
-
-    .btn-save {
-        background: linear-gradient(135deg, #198754, #157347);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 16px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
-        }
-
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #666;
-    }
-
-    .empty-icon {
-        font-size: 4rem;
-        color: #ddd;
-        margin-bottom: 20px;
-        display: block;
-    }
-
-    /* Statistics Cards */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -236,7 +66,6 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
         border: 1px solid #f0f0f0;
-        cursor: pointer;
     }
 
         .stat-card:hover {
@@ -256,8 +85,8 @@
     }
 
         .stat-icon.total {
-            background: rgba(13, 110, 253, 0.1);
-            color: #0d6efd;
+            background: rgba(25, 118, 210, 0.1);
+            color: #1976d2;
         }
 
         .stat-icon.pending {
@@ -265,20 +94,20 @@
             color: #ffc107;
         }
 
-        .stat-icon.confirmed {
-            background: rgba(25, 135, 84, 0.1);
-            color: #198754;
+        .stat-icon.completed {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
         }
 
-        .stat-icon.completed {
-            background: rgba(111, 66, 193, 0.1);
-            color: #6f42c1;
+        .stat-icon.preparing {
+            background: rgba(3, 169, 244, 0.1);
+            color: #03a9f4;
         }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--dark);
+        color: #333;
         margin-bottom: 5px;
     }
 
@@ -288,7 +117,7 @@
         font-size: 0.9rem;
     }
 
-    /* Filters */
+    /* Filters Card */
     .filters-card {
         background: white;
         border-radius: 15px;
@@ -307,14 +136,14 @@
 
     .filter-item label {
         font-weight: 600;
-        color: var(--dark);
+        color: #333;
         margin-bottom: 8px;
         display: block;
         font-size: 0.9rem;
     }
 
         .filter-item label i {
-            color: var(--primary);
+            color: #1976d2;
             margin-right: 6px;
             width: 16px;
         }
@@ -328,14 +157,254 @@
     }
 
         .form-control-sm:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
+            border-color: #1976d2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
         }
+
+    .btn-reset {
+        background: transparent;
+        color: #6c757d;
+        border: 2px solid #6c757d;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .btn-reset:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .table-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #f0f0f0;
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 20px 25px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table-title {
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .table {
+        margin: 0;
+        border: none;
+    }
+
+        .table thead th {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 15px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody td {
+            padding: 12px;
+            vertical-align: middle;
+            border-color: #f8f9fa;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background: #f8f9fa;
+                transform: translateX(5px);
+            }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
+    .status-confirmed {
+        background: rgba(3, 169, 244, 0.1);
+        color: #03a9f4;
+        border: 1px solid rgba(3, 169, 244, 0.2);
+    }
+
+    .status-preparing {
+        background: rgba(156, 39, 176, 0.1);
+        color: #9c27b0;
+        border: 1px solid rgba(156, 39, 176, 0.2);
+    }
+
+    .status-ready {
+        background: rgba(255, 152, 0, 0.1);
+        color: #ff9800;
+        border: 1px solid rgba(255, 152, 0, 0.2);
+    }
+
+    .status-completed {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+        border: 1px solid rgba(76, 175, 80, 0.2);
+    }
+
+    .status-cancelled {
+        background: rgba(244, 67, 54, 0.1);
+        color: #f44336;
+        border: 1px solid rgba(244, 67, 54, 0.2);
+    }
+
+    .price-value {
+        font-weight: 700;
+        color: #1976d2;
+        font-size: 1rem;
+    }
+
+        .price-value::before {
+            content: '$';
+            font-size: 0.8rem;
+            color: #4caf50;
+            margin-right: 2px;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #1976d2, #1565c0);
+        color: white;
+    }
+
+    .btn-details {
+        background: linear-gradient(135deg, #0dcaf0, #0baccc);
+        color: white;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+    .status-form {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .status-select {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+    }
+
+        .status-select:focus {
+            border-color: #1976d2;
+            outline: none;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .pagination-container {
+        background: #f8f9fa;
+        padding: 20px 25px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .pagination-info {
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .pagination .page-item .page-link {
+        border: none;
+        border-radius: 8px;
+        margin: 0 3px;
+        color: #333;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .pagination .page-item.active .page-link {
+        background: #1976d2;
+        color: white;
+    }
+
+    .pagination .page-item:not(.active) .page-link:hover {
+        background: #e9ecef;
+        color: #1976d2;
+    }
 
     /* Responsive Design */
     @@media (max-width: 768px) {
+        .page-header {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
         .page-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         .stats-grid {
@@ -348,43 +417,22 @@
             gap: 15px;
         }
 
-        .table thead {
-            display: none;
+        .action-buttons {
+            flex-direction: column;
         }
 
-        .table tbody tr {
-            display: block;
-            margin-bottom: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+        .btn-action {
+            width: 100%;
+            justify-content: center;
         }
-
-        .table tbody td {
-            display: block;
-            text-align: center;
-            padding: 10px 0;
-            border: none;
-        }
-
-            .table tbody td:before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: var(--dark);
-                display: block;
-                margin-bottom: 5px;
-                font-size: 0.8rem;
-                text-transform: uppercase;
-            }
 
         .status-form {
             flex-direction: column;
-            gap: 8px;
+            gap: 5px;
         }
 
-        .status-select {
-            width: 100%;
+        .table-responsive {
+            font-size: 0.8rem;
         }
     }
 
@@ -399,45 +447,66 @@
     }
 </style>
 
-<section class="orders-management-section">
+<section class="orders-section">
     <div class="container">
-        <h1 class="page-title">
-            <i class="fas fa-receipt me-2"></i>Orders Management
-        </h1>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="header-content">
+                        <h1 class="page-title">
+                            <i class="fas fa-clipboard-list me-2"></i>Orders Management
+                        </h1>
+                        <p class="page-subtitle">Manage and track all restaurant orders</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <div class="text-white opacity-75">
+                        <i class="fas fa-sync-alt me-2"></i>Real-time Updates
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Statistics -->
+        <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon total">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-shopping-bag"></i>
                 </div>
-                <div class="stat-number">@Model.Count()</div>
+                <div class="stat-number" id="totalCount">@Model.Count()</div>
                 <div class="stat-label">Total Orders</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon pending">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="stat-number">@Model.Count(o => o.Status == "Pending")</div>
+                <div class="stat-number text-warning" id="pendingCount">
+                    @Model.Count(o => o.Status == "Pending")
+                </div>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon confirmed">
-                    <i class="fas fa-check-circle"></i>
+                <div class="stat-icon preparing">
+                    <i class="fas fa-utensils"></i>
                 </div>
-                <div class="stat-number">@Model.Count(o => o.Status == "Confirmed")</div>
-                <div class="stat-label">Confirmed</div>
+                <div class="stat-number text-info" id="preparingCount">
+                    @Model.Count(o => o.Status == "Preparing")
+                </div>
+                <div class="stat-label">Preparing</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon completed">
-                    <i class="fas fa-flag-checkered"></i>
+                    <i class="fas fa-check-circle"></i>
                 </div>
-                <div class="stat-number">@Model.Count(o => o.Status == "Completed")</div>
+                <div class="stat-number text-success" id="completedCount">
+                    @Model.Count(o => o.Status == "Completed")
+                </div>
                 <div class="stat-label">Completed</div>
             </div>
         </div>
 
-        <!-- Filters -->
+        <!-- Filters Card -->
         <div class="filters-card">
             <div class="filter-group">
                 <div class="filter-item">
@@ -445,7 +514,7 @@
                         <i class="fas fa-search"></i>Search Orders
                     </label>
                     <input type="text" id="searchInput" class="form-control form-control-sm"
-                           placeholder="Search by customer name...">
+                           placeholder="Search by order number or customer...">
                 </div>
                 <div class="filter-item">
                     <label for="statusFilter">
@@ -453,118 +522,152 @@
                     </label>
                     <select id="statusFilter" class="form-control form-control-sm">
                         <option value="all">All Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        @foreach (var status in Enum.GetNames(typeof(RestaurantManagement.Models.OrderStatus)))
+                        {
+                            <option value="@status.ToLower()">@status</option>
+                        }
                     </select>
                 </div>
                 <div class="filter-item">
-                    <label for="dateFilter">
-                        <i class="fas fa-calendar"></i>Date Range
+                    <label for="typeFilter">
+                        <i class="fas fa-truck"></i>Order Type
                     </label>
-                    <select id="dateFilter" class="form-control form-control-sm">
-                        <option value="all">All Time</option>
-                        <option value="today">Today</option>
-                        <option value="week">This Week</option>
-                        <option value="month">This Month</option>
+                    <select id="typeFilter" class="form-control form-control-sm">
+                        <option value="all">All Types</option>
+                        <option value="DineIn">Dine-In</option>
+                        <option value="Takeout">Takeout</option>
+                        <option value="Delivery">Delivery</option>
                     </select>
                 </div>
                 <div class="filter-item">
-                    <button id="resetBtn" class="btn btn-outline-secondary w-100">
+                    <label for="itemsPerPage">
+                        <i class="fas fa-list"></i>Items Per Page
+                    </label>
+                    <select id="itemsPerPage" class="form-control form-control-sm">
+                        <option value="5">5 Items</option>
+                        <option value="10" selected>10 Items</option>
+                        <option value="25">25 Items</option>
+                        <option value="50">50 Items</option>
+                        <option value="all">All Items</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <button id="resetBtn" class="btn-reset">
                         <i class="fas fa-undo"></i>Reset Filters
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Orders Table -->
-        <div class="orders-card">
-            <div class="card-header-custom">
-                <h2><i class="fas fa-list-check"></i> All Orders</h2>
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-header">
+                <h3 class="table-title">
+                    <i class="fas fa-table me-2"></i>Orders List
+                </h3>
             </div>
 
-            <div class="table-container">
-                @if (!Model.Any())
-                {
-                    <div class="empty-state">
-                        <i class="fas fa-receipt empty-icon"></i>
-                        <h4>No Orders Found</h4>
-                        <p class="text-muted">When orders are placed, they will appear here</p>
-                    </div>
-                }
-                else
-                {
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th data-label="Customer">Customer</th>
-                                    <th data-label="Date">Date</th>
-                                    <th data-label="Total">Total</th>
-                                    <th data-label="Status">Status</th>
-                                    <th data-label="Actions">Actions</th>
-                                    <th data-label="Update Status">Update Status</th>
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <i class="fas fa-inbox empty-icon"></i>
+                    <h4>No Orders Found</h4>
+                    <p class="text-muted mb-4">No orders have been placed yet</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th width="10%">Order #</th>
+                                <th width="15%">Customer</th>
+                                <th width="12%">Date</th>
+                                <th width="12%">Est. Delivery</th>
+                                <th width="10%">Total</th>
+                                <th width="12%">Status</th>
+                                <th width="10%">Type</th>
+                                <th width="14%">Address</th>
+                                <th width="15%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            @foreach (var order in Model)
+                            {
+                                <tr data-status="@order.Status.ToLower()"
+                                    data-type="@order.OrderType.ToString().ToLower()"
+                                    data-search="@order.OrderNumber.ToLower() @order.Notes?.ToLower()">
+                                    <td class="fw-semibold">@order.OrderNumber</td>
+                                    <td>@order.Notes?.Replace("Customer Name: ", "")</td>
+                                    <td>@order.OrderDate.ToString("MM/dd/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (order.EstimatedDeliveryTime.HasValue)
+                                        {
+                                            @order.EstimatedDeliveryTime.Value.ToString("MM/dd/yyyy HH:mm")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="price-value">@order.TotalPrice.ToString("0.00")</span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-@order.Status.ToLower()">
+                                            <i class="fas @GetStatusIcon(order.Status) me-1"></i>
+                                            @order.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">@order.OrderType</span>
+                                    </td>
+                                    <td class="text-muted small">
+                                        @(order.DeliveryAddress ?? "-")
+                                    </td>
+                                    <td>
+                                        <form asp-action="UpdateStatus" method="post" class="status-form">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@order.Id" />
+                                            <select name="newStatus" class="status-select">
+                                                @foreach (var status in Enum.GetNames(typeof(RestaurantManagement.Models.OrderStatus)))
+                                                {
+                                                    <option value="@status" selected="@(order.Status == status)">
+                                                        @status
+                                                    </option>
+                                                }
+                                            </select>
+                                            <button type="submit" class="btn-action btn-update" title="Update Status">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody id="ordersTableBody">
-                                @foreach (var order in Model.OrderByDescending(o => o.OrderDate))
-                                {
-                                    <tr data-status="@order.Status.ToLower()"
-                                        data-customer="@order.Notes?.Replace("Customer Name: ", "").ToLower()"
-                                        data-date="@order.OrderDate.ToString("yyyy-MM-dd")">
-                                        <td data-label="Customer">
-                                            <div class="customer-name" title="@order.Notes?.Replace("Customer Name: ", "")">
-                                                @order.Notes?.Replace("Customer Name: ", "")
-                                            </div>
-                                        </td>
-                                        <td data-label="Date" class="order-date">
-                                            @order.OrderDate.ToString("yyyy-MM-dd HH:mm")
-                                        </td>
-                                        <td data-label="Total" class="total-price">
-                                            $@order.TotalPrice.ToString("0.00")
-                                        </td>
-                                        <td data-label="Status">
-                                            <span class="status-badge status-@order.Status.ToLower()">
-                                                <i class="fas @GetStatusIcon(order.Status) me-1"></i>
-                                                @order.Status
-                                            </span>
-                                        </td>
-                                        <td data-label="Actions">
-                                            <a asp-action="Details" asp-route-id="@order.Id" class="btn-details">
-                                                <i class="fas fa-eye"></i>Details
-                                            </a>
-                                        </td>
-                                        <td data-label="Update Status">
-                                            <form asp-action="UpdateStatus" method="post" class="status-form">
-                                                <input type="hidden" name="id" value="@order.Id" />
-                                                <select name="newStatus" class="status-select">
-                                                    @foreach (var status in new[] { "Pending", "Confirmed", "Completed", "Cancelled" })
-                                                    {
-                                                        <option value="@status" selected="@(status == order.Status ? "selected" : null)">
-                                                            @status
-                                                        </option>
-                                                    }
-                                                </select>
-                                                <button type="submit" class="btn-save">
-                                                    <i class="fas fa-save"></i>Save
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-                    <!-- No Results Message -->
-                    <div id="noResults" class="empty-state" style="display: none;">
-                        <i class="fas fa-search empty-icon"></i>
-                        <h4>No Orders Found</h4>
-                        <p class="text-muted">Try adjusting your search criteria</p>
+                <div id="noResults" class="empty-state" style="display: none;">
+                    <i class="fas fa-search empty-icon"></i>
+                    <h4>No Results Found</h4>
+                    <p class="text-muted">Try adjusting your search criteria</p>
+                </div>
+
+                <div class="pagination-container">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div class="pagination-info">
+                            Showing <span class="fw-bold" id="showStart">1</span> to
+                            <span class="fw-bold" id="showEnd">@Math.Min(10, Model.Count())</span> of
+                            <span class="fw-bold" id="showTotal">@Model.Count()</span> entries
+                        </div>
+                        <nav>
+                            <ul class="pagination mb-0" id="pagination"></ul>
+                        </nav>
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
     </div>
 </section>
@@ -575,94 +678,213 @@
         return status.ToLower() switch
         {
             "pending" => "fa-clock",
-            "confirmed" => "fa-check-circle",
-            "completed" => "fa-flag-checkered",
-            "cancelled" => "fa-times-circle",
+            "confirmed" => "fa-check",
             "preparing" => "fa-utensils",
-            _ => "fa-question-circle"
+            "ready" => "fa-bell",
+            "completed" => "fa-check-circle",
+            "cancelled" => "fa-times-circle",
+            _ => "fa-question"
         };
     }
 }
 
 @section Scripts {
     <script>
-        // Filtering functionality
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let allRows = [];
+        let filteredRows = [];
+
         document.addEventListener('DOMContentLoaded', function() {
+            initializeTable();
+            setupEventListeners();
+            applyFilters();
+        });
+
+        function initializeTable() {
+            allRows = Array.from(document.querySelectorAll('#tableBody tr'));
+            filteredRows = [...allRows];
+        }
+
+        function setupEventListeners() {
             const searchInput = document.getElementById('searchInput');
             const statusFilter = document.getElementById('statusFilter');
-            const dateFilter = document.getElementById('dateFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const itemsPerPageSelect = document.getElementById('itemsPerPage');
             const resetBtn = document.getElementById('resetBtn');
-            const ordersTableBody = document.getElementById('ordersTableBody');
-            const noResults = document.getElementById('noResults');
 
-            function applyFilters() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const status = statusFilter.value.toLowerCase();
-                const dateRange = dateFilter.value;
-
-                let visibleRows = 0;
-                const rows = ordersTableBody.querySelectorAll('tr');
-
-                rows.forEach(row => {
-                    const customer = row.getAttribute('data-customer') || '';
-                    const rowStatus = row.getAttribute('data-status');
-                    const rowDate = row.getAttribute('data-date');
-
-                    const matchesSearch = customer.includes(searchTerm);
-                    const matchesStatus = status === 'all' || rowStatus === status;
-                    const matchesDate = checkDateRange(rowDate, dateRange);
-
-                    if (matchesSearch && matchesStatus && matchesDate) {
-                        row.style.display = '';
-                        visibleRows++;
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-
-                // Show/hide no results message
-                if (visibleRows === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
-            }
-
-            function checkDateRange(dateString, range) {
-                if (range === 'all') return true;
-
-                const rowDate = new Date(dateString);
-                const today = new Date();
-
-                switch (range) {
-                    case 'today':
-                        return rowDate.toDateString() === today.toDateString();
-                    case 'week':
-                        const weekAgo = new Date(today);
-                        weekAgo.setDate(today.getDate() - 7);
-                        return rowDate >= weekAgo;
-                    case 'month':
-                        const monthAgo = new Date(today);
-                        monthAgo.setMonth(today.getMonth() - 1);
-                        return rowDate >= monthAgo;
-                    default:
-                        return true;
-                }
-            }
-
-            searchInput.addEventListener('input', applyFilters);
+            searchInput.addEventListener('input', debounce(applyFilters, 300));
             statusFilter.addEventListener('change', applyFilters);
-            dateFilter.addEventListener('change', applyFilters);
+            typeFilter.addEventListener('change', applyFilters);
 
-            resetBtn.addEventListener('click', function() {
-                searchInput.value = '';
-                statusFilter.value = 'all';
-                dateFilter.value = 'all';
+            itemsPerPageSelect.addEventListener('change', function() {
+                itemsPerPage = this.value === 'all' ? filteredRows.length : parseInt(this.value);
+                currentPage = 1;
                 applyFilters();
             });
 
-            // Initialize filters
+            resetBtn.addEventListener('click', resetFilters);
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+
+            filteredRows = allRows.filter(row => {
+                const searchData = row.getAttribute('data-search') || '';
+                const rowStatus = row.getAttribute('data-status');
+                const rowType = row.getAttribute('data-type');
+
+                const matchesSearch = searchData.includes(searchTerm);
+                const matchesStatus = status === 'all' || rowStatus === status;
+                const matchesType = type === 'all' || rowType === type;
+
+                return matchesSearch && matchesStatus && matchesType;
+            });
+
+            updateStatistics();
+            displayPage(1);
+        }
+
+        function displayPage(page) {
+            currentPage = page;
+            const totalItems = filteredRows.length;
+            const start = (page - 1) * itemsPerPage;
+            const end = itemsPerPage >= totalItems ? totalItems : Math.min(start + itemsPerPage, totalItems);
+
+            allRows.forEach(row => row.style.display = 'none');
+
+            const noResults = document.getElementById('noResults');
+            const tableContainer = document.querySelector('.table-responsive');
+            const footer = document.querySelector('.pagination-container');
+
+            if (filteredRows.length === 0) {
+                noResults.style.display = 'block';
+                tableContainer.style.display = 'none';
+                if (footer) footer.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                tableContainer.style.display = 'block';
+                if (footer) footer.style.display = 'flex';
+
+                filteredRows.slice(start, end).forEach(row => {
+                    row.style.display = '';
+                });
+            }
+
+            updatePaginationInfo(start, end, totalItems);
+            renderPagination();
+        }
+
+        function updatePaginationInfo(start, end, total) {
+            document.getElementById('showStart').textContent = total > 0 ? start + 1 : 0;
+            document.getElementById('showEnd').textContent = end;
+            document.getElementById('showTotal').textContent = total;
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+            const paginationEl = document.getElementById('pagination');
+            paginationEl.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            addPaginationButton(paginationEl, 'prev', currentPage === 1, () => {
+                if (currentPage > 1) displayPage(currentPage - 1);
+            });
+
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage < maxVisiblePages - 1) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            if (startPage > 1) {
+                addPageNumber(paginationEl, 1);
+                if (startPage > 2) addEllipsis(paginationEl);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                addPageNumber(paginationEl, i);
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) addEllipsis(paginationEl);
+                addPageNumber(paginationEl, totalPages);
+            }
+
+            addPaginationButton(paginationEl, 'next', currentPage === totalPages, () => {
+                if (currentPage < totalPages) displayPage(currentPage + 1);
+            });
+        }
+
+        function addPaginationButton(container, type, disabled, onClick) {
+            const li = document.createElement('li');
+            li.className = `page-item ${disabled ? 'disabled' : ''}`;
+
+            const icon = type === 'prev' ? 'fa-chevron-left' : 'fa-chevron-right';
+            li.innerHTML = `<a class="page-link" href="#"><i class="fas ${icon}"></i></a>`;
+
+            if (!disabled) {
+                li.querySelector('a').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    onClick();
+                });
+            }
+
+            container.appendChild(li);
+        }
+
+        function addPageNumber(container, pageNum) {
+            const li = document.createElement('li');
+            li.className = `page-item ${pageNum === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#">${pageNum}</a>`;
+
+            li.querySelector('a').addEventListener('click', (e) => {
+                e.preventDefault();
+                displayPage(pageNum);
+            });
+
+            container.appendChild(li);
+        }
+
+        function addEllipsis(container) {
+            const li = document.createElement('li');
+            li.className = 'page-item disabled';
+            li.innerHTML = '<a class="page-link" href="#">...</a>';
+            container.appendChild(li);
+        }
+
+        function updateStatistics() {
+            const pendingCount = filteredRows.filter(row => row.getAttribute('data-status') === 'pending').length;
+            const preparingCount = filteredRows.filter(row => row.getAttribute('data-status') === 'preparing').length;
+            const completedCount = filteredRows.filter(row => row.getAttribute('data-status') === 'completed').length;
+
+            document.getElementById('totalCount').textContent = filteredRows.length;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('preparingCount').textContent = preparingCount;
+            document.getElementById('completedCount').textContent = completedCount;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('typeFilter').value = 'all';
+            document.getElementById('itemsPerPage').value = '10';
+            itemsPerPage = 10;
+            currentPage = 1;
             applyFilters();
-        });
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
     </script>
 }

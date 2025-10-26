@@ -13,3 +13,4 @@ F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Appli
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\refint\Application.dll
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.pdb
 F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\ref\Application.dll
+F:\.net\ITI 4 mounth\MVC\RestaurantManagement\Application\obj\Debug\net8.0\Application.sourcelink.json
