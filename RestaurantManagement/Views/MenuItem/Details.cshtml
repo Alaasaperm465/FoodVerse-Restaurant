@@ -572,29 +572,7 @@
                             </div>
                         </div>
 
-                        <div class="metadata-section">
-                            <h3 class="section-title">
-                                <i class="fas fa-database"></i>System Metadata
-                            </h3>
-                            <div class="metadata-grid">
-                                <div class="metadata-item">
-                                    <div class="metadata-label">Item ID</div>
-                                    <div class="metadata-value">@Model.Id</div>
-                                </div>
-                                <div class="metadata-item">
-                                    <div class="metadata-label">Category ID</div>
-                                    <div class="metadata-value">@Model.CategoryId</div>
-                                </div>
-                                <div class="metadata-item">
-                                    <div class="metadata-label">Created At</div>
-                                    <div class="metadata-value">@Model.CreatedAt.ToString("MMM dd, yyyy")</div>
-                                </div>
-                                <div class="metadata-item">
-                                    <div class="metadata-label">Image File</div>
-                                    <div class="metadata-value">@(Model.ImageUrl ?? "No image")</div>
-                                </div>
-                            </div>
-                        </div>
+                            
 
                         <div class="action-buttons">
                             <a asp-action="Index" class="btn-back">

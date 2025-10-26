@@ -40,7 +40,6 @@ namespace RestaurantManagement.Controllers
                 return NotFound();
             return View(item);
         }
-
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -52,8 +51,6 @@ namespace RestaurantManagement.Controllers
 
             return View(vm);
         }
-
-  
         //[ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> SaveCreate(MenuItemVM model)
@@ -124,11 +121,8 @@ namespace RestaurantManagement.Controllers
 
             return View(viewModel);
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Edit(int id, MenuItemVM model)
         {
             if (!ModelState.IsValid)

@@ -21,8 +21,7 @@ namespace RestaurantManagement.Controllers
             var categories = await _service.GetAllAsync();
             var categoriesWithItems = categories.Where(c=>c.MenuItems != null && c.MenuItems.Any() && c.IsActive).ToList();
             return View(categoriesWithItems);
-        }
-         
+        }  
         [HttpGet]
         public IActionResult Create()
         {
