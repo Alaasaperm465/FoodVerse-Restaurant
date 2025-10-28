@@ -4,383 +4,78 @@
     ViewData["Title"] = "Login";
 }
 
-<style>
-    .login-section {
-        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        padding: 80px 0 40px;
-        margin-top: -80px;
-    }
-
-    .login-container {
-        max-width: 450px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .login-header {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        padding: 40px 30px 30px;
-        text-align: center;
-        position: relative;
-    }
-
-        .login-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--secondary);
-        }
-
-    .login-icon {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        display: block;
-        animation: float 3s ease-in-out infinite;
-    }
-
-    @@keyframes float {
-        0%, 100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
-    .login-title {
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        margin: 0;
-        font-size: 2.2rem;
-    }
-
-    .login-subtitle {
-        opacity: 0.9;
-        margin: 8px 0 0;
-        font-size: 1rem;
-    }
-
-    .login-body {
-        padding: 40px 35px 30px;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
-        position: relative;
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: var(--dark);
-        margin-bottom: 8px;
-        display: block;
-        font-size: 0.95rem;
-    }
-
-    .form-control {
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 14px 45px 14px 15px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: #fafafa;
-        width: 100%;
-    }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(197, 45, 47, 0.1);
-            background: white;
-        }
-
-    .input-icon {
-        position: absolute;
-        right: 15px;
-        top: 40px;
-        color: #6c757d;
-        font-size: 1.1rem;
-    }
-
-    .text-danger {
-        font-size: 0.85rem;
-        margin-top: 5px;
-        display: block;
-        font-weight: 500;
-    }
-
-    .validation-summary-errors {
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        color: #721c24;
-    }
-
-        .validation-summary-errors ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-    .remember-me {
-        display: flex;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .form-check-input {
-        width: 18px;
-        height: 18px;
-        margin-right: 10px;
-        border: 2px solid #ddd;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-        .form-check-input:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-    .form-check-label {
-        color: #666;
-        font-weight: 500;
-        cursor: pointer;
-    }
-
-    .btn-login {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 15px 30px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        width: 100%;
-        transition: all 0.3s ease;
-        margin-bottom: 20px;
-    }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
-        }
-
-    .signup-link {
-        text-align: center;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #e9ecef;
-    }
-
-    .signup-text {
-        color: #666;
-        margin-bottom: 10px;
-    }
-
-    .btn-signup {
-        background: transparent;
-        color: var(--primary);
-        border: 2px solid var(--primary);
-        border-radius: 12px;
-        padding: 12px 25px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s ease;
-        width: 100%;
-        text-align: center;
-    }
-
-        .btn-signup:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(197, 45, 47, 0.2);
-        }
-
-    .login-features {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .feature-item {
-        padding: 15px 10px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-    }
-
-        .feature-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-    .feature-icon {
-        font-size: 1.5rem;
-        color: var(--primary);
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .feature-text {
-        font-size: 0.8rem;
-        color: #666;
-        font-weight: 500;
-    }
-
-    @@media (max-width: 576px) {
-        .login-container {
-            margin: 20px;
-            border-radius: 15px;
-        }
-
-        .login-body {
-            padding: 30px 25px;
-        }
-
-        .login-header {
-            padding: 30px 25px 25px;
-        }
-
-        .login-title {
-            font-size: 1.8rem;
-        }
-
-        .login-features {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-    }
-
-    .btn-loading {
-        position: relative;
-        color: transparent;
-    }
-
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 50%;
-            left: 50%;
-            margin-left: -10px;
-            margin-top: -10px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-right-color: transparent;
-            animation: spin 0.8s linear infinite;
-        }
-
-    @@keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .password-toggle {
-        position: absolute;
-        right: 15px;
-        top: 40px;
-        background: none;
-        border: none;
-        color: #6c757d;
-        cursor: pointer;
-        font-size: 1.1rem;
-    }
-</style>
-
-<section class="login-section">
+<section class="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-7">
-                <div class="login-container">
-                    <div class="login-header">
-                        <i class="fas fa-sign-in-alt login-icon"></i>
-                        <h1 class="login-title">Welcome Back</h1>
-                        <p class="login-subtitle">Sign in to your account</p>
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+                        <i class="bi bi-box-arrow-in-right display-5 mb-3 d-block"></i>
+                        <h2 class="fw-bold mb-0">Welcome Back</h2>
+                        <small>Sign in to your account</small>
                     </div>
 
-                    <div class="login-body">
+                    <div class="card-body p-4">
                         <form asp-action="Login" method="post" id="loginForm">
-                            <div asp-validation-summary="All" class="validation-summary-errors"></div>
+                            <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-                            <div class="form-group">
-                                <label asp-for="UserName" class="form-label">
-                                    <i class="fas fa-user me-2"></i>Username
+                            <div class="mb-3">
+                                <label asp-for="UserName" class="form-label fw-semibold">
+                                    <i class="bi bi-person-fill me-2"></i>Username
                                 </label>
                                 <input asp-for="UserName" class="form-control" placeholder="Enter your username" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
-                                <i class="fas fa-user input-icon"></i>
+                                <span asp-validation-for="UserName" class="text-danger small"></span>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="Password" class="form-label">
-                                    <i class="fas fa-lock me-2"></i>Password
+                            <div class="mb-3 position-relative">
+                                <label asp-for="Password" class="form-label fw-semibold">
+                                    <i class="bi bi-lock-fill me-2"></i>Password
                                 </label>
-                                <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" id="password" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
-                                <i class="fas fa-lock input-icon"></i>
-                                <button type="button" class="password-toggle" id="togglePassword">
-                                    <i class="fas fa-eye"></i>
+                                <input asp-for="Password" type="password" class="form-control pe-5" placeholder="Enter your password" id="password" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+
+                                <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y me-3 p-0 text-secondary" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
                                 </button>
                             </div>
 
-                            <div class="remember-me">
+                            <div class="form-check mb-3">
                                 <input class="form-check-input" asp-for="RememberMe" id="rememberMe" />
                                 <label class="form-check-label" for="rememberMe">
                                     Keep me signed in
                                 </label>
                             </div>
 
-                            <button type="submit" class="btn-login" id="loginBtn">
-                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            <button type="submit" class="btn btn-primary w-100 fw-semibold py-2" id="loginBtn">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
                             </button>
                         </form>
 
-                        <div class="signup-link">
-                            <p class="signup-text">Don't have an account?</p>
-                            <a asp-controller="Account" asp-action="Register" class="btn-signup">
-                                <i class="fas fa-user-plus me-2"></i>Create New Account
+                        <div class="text-center mt-4 border-top pt-3">
+                            <p class="text-muted mb-2">Don't have an account?</p>
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary w-100 fw-semibold">
+                                <i class="bi bi-person-plus-fill me-2"></i>Create New Account
                             </a>
                         </div>
 
-                        <div class="login-features">
-                            <div class="feature-item">
-                                <i class="fas fa-shield-alt feature-icon"></i>
-                                <div class="feature-text">Secure Login</div>
+                        <div class="row text-center mt-4 g-2">
+                            <div class="col">
+                                <div class="p-3 bg-light rounded shadow-sm">
+                                    <i class="bi bi-shield-lock-fill text-primary fs-4 mb-2 d-block"></i>
+                                    <small class="text-muted">Secure Login</small>
+                                </div>
                             </div>
-                            <div class="feature-item">
-                                <i class="fas fa-bolt feature-icon"></i>
-                                <div class="feature-text">Fast Access</div>
+                            <div class="col">
+                                <div class="p-3 bg-light rounded shadow-sm">
+                                    <i class="bi bi-lightning-charge-fill text-warning fs-4 mb-2 d-block"></i>
+                                    <small class="text-muted">Fast Access</small>
+                                </div>
                             </div>
-                            <div class="feature-item">
-                                <i class="fas fa-users feature-icon"></i>
-                                <div class="feature-text">Multi-User</div>
+                            <div class="col">
+                                <div class="p-3 bg-light rounded shadow-sm">
+                                    <i class="bi bi-people-fill text-success fs-4 mb-2 d-block"></i>
+                                    <small class="text-muted">Multi-User</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -391,59 +86,31 @@
 </section>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const icon = this.querySelector('i');
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
 
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
+        togglePassword.addEventListener('click', () => {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            togglePassword.innerHTML = type === 'password'
+                ? '<i class="bi bi-eye"></i>'
+                : '<i class="bi bi-eye-slash"></i>';
         });
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             const loginBtn = document.getElementById('loginBtn');
             const originalText = loginBtn.innerHTML;
 
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing In...';
+            loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing In...';
             loginBtn.disabled = true;
 
             setTimeout(() => {
-                if (loginBtn.disabled) {
-                    loginBtn.innerHTML = originalText;
-                    loginBtn.disabled = false;
-                }
-            }, 5000);
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('input[name="UserName"]').focus();
-        });
-
-        const inputs = document.querySelectorAll('.form-control');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-
-            if (input.value) {
-                input.parentElement.classList.add('focused');
-            }
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+            }, 4000);
         });
     </script>
 }

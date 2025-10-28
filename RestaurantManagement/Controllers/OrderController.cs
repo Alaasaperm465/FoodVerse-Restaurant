@@ -58,29 +58,44 @@ namespace RestaurantManagement.Controllers
 
             return View(viewModel);
         }
-        public async Task<IActionResult> Cart()   //صفحة الاوردرات اللي هتظهر لليوزر بس
+        public async Task<IActionResult> Cart()     //صفحة الاوردرات اللي هتظهر لليوزر بس
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            var pendingOrder = await _context.Orders
+            // ✅ كل الطلبات النشطة (مش Completed ولا Cancelled)
+            var activeOrders = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItem)
-                .FirstOrDefaultAsync(o => o.Status == "Pending" && o.UserId == user.Id);
+                .Where(o => o.UserId == user.Id &&
+                            o.Status != OrderStatus.Completed.ToString() &&
+                            o.Status != OrderStatus.Cancelled.ToString())
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
 
-            if (pendingOrder == null)
-                return View(pendingOrder);
+            // لو مفيش ولا طلب
+            if (!activeOrders.Any())
+                return View("EmptyCart");
 
-            var total = pendingOrder.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+            // ✅ احسب التوتال لكل طلب على حدة
+            foreach (var order in activeOrders)
+            {
+                var total = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
 
-            var discountResult = ApplyDiscounts(total);
-            pendingOrder.TotalPrice = discountResult.FinalTotal;
-            pendingOrder.DiscountAmount = discountResult.DiscountAmount;
-            pendingOrder.DiscountDescription = discountResult.DiscountDescription;
+                var discountResult = ApplyDiscounts(total);
+                order.TotalPrice = discountResult.FinalTotal;
+                order.DiscountAmount = discountResult.DiscountAmount;
+                order.DiscountDescription = discountResult.DiscountDescription;
 
-            _context.Update(pendingOrder);
+                _context.Update(order);
+            }
+
             await _context.SaveChangesAsync();
 
-            return View(pendingOrder);
+            return View(activeOrders); // 👈 خليه يرجع List بدل Order واحد
         }
         public async Task<IActionResult> MyOrders()
         {
@@ -211,60 +226,59 @@ namespace RestaurantManagement.Controllers
             }
             return RedirectToAction("Cart");
         }
-        //[HttpPost]
-        public async Task<IActionResult> ConfirmOrder(int id, string customerName, OrderType orderType = OrderType.DineIn, string deliveryAddress = null)
+        [HttpGet]
+        public async Task<IActionResult> ConfirmOrder(int id, string customerName, string orderType, string? deliveryAddress)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var order = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItem)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id && o.UserId == user.Id);
 
             if (order == null)
-                return NotFound();
-
-            // لو الطلب Delivery لازم العنوان
-            if (orderType == OrderType.Delivery && string.IsNullOrWhiteSpace(deliveryAddress))
             {
-                TempData["ErrorMessage"] = "Delivery address is required for delivery orders.";
+                TempData["ErrorMessage"] = "Order not found!";
                 return RedirectToAction("Cart");
             }
 
-            var total = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+            if (order.Status != OrderStatus.Pending.ToString())
+            {
+                TempData["InfoMessage"] = "Order already confirmed.";
+                return RedirectToAction("MyOrders");
+            }
 
-            var discountResult = ApplyDiscounts(total);
-            order.TotalPrice = discountResult.FinalTotal;
-            order.DiscountAmount = discountResult.DiscountAmount;
-            order.DiscountDescription = discountResult.DiscountDescription;
+            // ✅ تحويل الـ orderType النصي إلى enum
+            if (!Enum.TryParse<OrderType>(orderType, out var parsedOrderType))
+            {
+                TempData["ErrorMessage"] = "Invalid order type.";
+                return RedirectToAction("Cart");
+            }
 
+            // ✅ تحديث بيانات الطلب
             order.Status = OrderStatus.Confirmed.ToString();
+            order.OrderType = parsedOrderType;
+            order.DeliveryAddress = parsedOrderType == OrderType.Delivery ? deliveryAddress : null;
             order.OrderDate = DateTime.Now;
-            order.Notes = $"Customer Name: {customerName}";
-            order.OrderType = orderType;
-            if (orderType == OrderType.Delivery)
+
+            // حساب وقت التوصيل المتوقع لو الطلب Delivery
+            if (parsedOrderType == OrderType.Delivery)
             {
-                order.DeliveryAddress = deliveryAddress;
-                // حساب أقصى وقت تحضير من العناصر
-                int maxPrep = 0;
-                foreach (var oi in order.OrderItems)
-                {
-                    var prep = oi.MenuItem?.PreparationTime ?? 0; // غيّر الاسم لو عندك اسم مختلف
-                    if (prep > maxPrep) maxPrep = prep;
-                }
-                order.EstimatedDeliveryTime = DateTime.UtcNow.AddMinutes(maxPrep + 30);
-            }
-            else
-            {
-                order.DeliveryAddress = null;
-                order.OrderDate = DateTime.UtcNow;
+                int maxPrepTime = order.OrderItems.Any()
+                    ? order.OrderItems.Max(i => i.MenuItem.PreparationTime)
+                    : 0;
+
+                order.EstimatedDeliveryTime = DateTime.Now.AddMinutes(maxPrepTime + 30);
             }
 
-            _context.Update(order);
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = discountResult.DiscountAmount > 0
-                ? $"Discount Applied: {discountResult.DiscountDescription}"
-                : "Order confirmed successfully!";
-
+            TempData["InfoMessage"] = "Your order has been confirmed successfully!";
             return RedirectToAction("OrderConfirmed");
         }
         private (decimal FinalTotal, decimal DiscountAmount, string DiscountDescription) ApplyDiscounts(decimal total)
@@ -295,8 +309,6 @@ namespace RestaurantManagement.Controllers
 
             return (total, discountAmount, description);
         }
-        //[HttpGet]
-
         public IActionResult OrderConfirmed()
         {
             return View();
