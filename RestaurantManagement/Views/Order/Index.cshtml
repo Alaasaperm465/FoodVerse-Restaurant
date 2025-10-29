@@ -5,6 +5,21 @@
 }
 
 <style>
+    /* 🎨 المتغيرات والألوان */
+    :root {
+        --primary: #c52d2f;
+        --primary-dark: #9c2325;
+        --secondary: #ffd54f;
+        --success: #2ecc71;
+        --warning: #f1c40f;
+        --danger: #e74c3c;
+        --info: #3498db;
+        --dark: #2c3e50;
+        --light: #f8f9fa;
+        --gray: #7f8c8d;
+        --border: #e1e1e1;
+    }
+
     .orders-section {
         background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
         min-height: calc(100vh - 80px);
@@ -12,8 +27,9 @@
         margin-top: -30px;
     }
 
+    /* 🏷 Page Header */
     .page-header {
-        background: linear-gradient(135deg, #1976d2, #1565c0);
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         color: white;
         border-radius: 20px;
         padding: 30px;
@@ -30,7 +46,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: #ffd54f;
+            background: var(--secondary);
         }
 
     .header-content {
@@ -51,6 +67,7 @@
         margin-bottom: 0;
     }
 
+    /* 📊 Stats Cards */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -85,8 +102,8 @@
     }
 
         .stat-icon.total {
-            background: rgba(25, 118, 210, 0.1);
-            color: #1976d2;
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
         }
 
         .stat-icon.pending {
@@ -94,20 +111,20 @@
             color: #ffc107;
         }
 
-        .stat-icon.completed {
-            background: rgba(76, 175, 80, 0.1);
-            color: #4caf50;
-        }
-
         .stat-icon.preparing {
             background: rgba(3, 169, 244, 0.1);
             color: #03a9f4;
         }
 
+        .stat-icon.completed {
+            background: rgba(25, 135, 84, 0.1);
+            color: #198754;
+        }
+
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: #333;
+        color: var(--dark);
         margin-bottom: 5px;
     }
 
@@ -117,7 +134,7 @@
         font-size: 0.9rem;
     }
 
-    /* Filters Card */
+    /* 🔍 Filters Card */
     .filters-card {
         background: white;
         border-radius: 15px;
@@ -136,14 +153,14 @@
 
     .filter-item label {
         font-weight: 600;
-        color: #333;
+        color: var(--dark);
         margin-bottom: 8px;
         display: block;
         font-size: 0.9rem;
     }
 
         .filter-item label i {
-            color: #1976d2;
+            color: var(--primary);
             margin-right: 6px;
             width: 16px;
         }
@@ -157,7 +174,7 @@
     }
 
         .form-control-sm:focus {
-            border-color: #1976d2;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
         }
 
@@ -178,6 +195,7 @@
             transform: translateY(-2px);
         }
 
+    /* 📋 Table Card */
     .table-card {
         background: white;
         border-radius: 15px;
@@ -194,7 +212,7 @@
 
     .table-title {
         font-weight: 600;
-        color: #333;
+        color: var(--dark);
         margin: 0;
         font-size: 1.2rem;
     }
@@ -205,7 +223,7 @@
     }
 
         .table thead th {
-            background: #1976d2;
+            background: var(--primary);
             color: white;
             border: none;
             padding: 15px 12px;
@@ -234,7 +252,7 @@
                 transform: translateX(5px);
             }
 
-    /* Status Badges */
+    /* ✅ Status Badge */
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;
@@ -283,19 +301,21 @@
         border: 1px solid rgba(244, 67, 54, 0.2);
     }
 
+    /* 💰 Price Styling */
     .price-value {
         font-weight: 700;
-        color: #1976d2;
+        color: var(--primary);
         font-size: 1rem;
     }
 
         .price-value::before {
             content: '$';
             font-size: 0.8rem;
-            color: #4caf50;
+            color: #198754;
             margin-right: 2px;
         }
 
+    /* 🛠 Action Buttons */
     .action-buttons {
         display: flex;
         gap: 8px;
@@ -313,16 +333,15 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        cursor: pointer;
-    }
-
-    .btn-update {
-        background: linear-gradient(135deg, #1976d2, #1565c0);
-        color: white;
     }
 
     .btn-details {
         background: linear-gradient(135deg, #0dcaf0, #0baccc);
+        color: white;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #198754, #157347);
         color: white;
     }
 
@@ -348,23 +367,33 @@
     }
 
         .status-select:focus {
-            border-color: #1976d2;
+            border-color: var(--primary);
             outline: none;
         }
 
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #666;
+    /* 🎯 Order Type Badges */
+    .type-badge {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: white;
     }
 
-    .empty-icon {
-        font-size: 4rem;
-        color: #ddd;
-        margin-bottom: 20px;
-        display: block;
+    .type-delivery {
+        background: #ffc107;
     }
 
+    .type-takeout {
+        background: #0dcaf0;
+    }
+
+    .type-dinein {
+        background: #198754;
+    }
+
+    /* 📄 Pagination */
     .pagination-container {
         background: #f8f9fa;
         padding: 20px 25px;
@@ -381,22 +410,36 @@
         border: none;
         border-radius: 8px;
         margin: 0 3px;
-        color: #333;
+        color: var(--dark);
         font-weight: 500;
         transition: all 0.3s ease;
     }
 
     .pagination .page-item.active .page-link {
-        background: #1976d2;
+        background: var(--primary);
         color: white;
     }
 
     .pagination .page-item:not(.active) .page-link:hover {
         background: #e9ecef;
-        color: #1976d2;
+        color: var(--primary);
     }
 
-    /* Responsive Design */
+    /* 🚫 Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    /* 📱 Responsive Design */
     @@media (max-width: 768px) {
         .page-header {
             padding: 25px 20px;
@@ -447,28 +490,24 @@
     }
 </style>
 
+
 <section class="orders-section">
     <div class="container">
-        <!-- Page Header -->
+        <!-- 🏷 Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <div class="header-content">
                         <h1 class="page-title">
-                            <i class="fas fa-clipboard-list me-2"></i>Orders Management
+                            <i class="fas fa-clipboard-list"></i>Orders Management
                         </h1>
                         <p class="page-subtitle">Manage and track all restaurant orders</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                    <div class="text-white opacity-75">
-                        <i class="fas fa-sync-alt me-2"></i>Real-time Updates
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Statistics Cards -->
+        <!-- 📊 Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon total">
@@ -506,7 +545,7 @@
             </div>
         </div>
 
-        <!-- Filters Card -->
+        <!-- 🔍 Filters Card -->
         <div class="filters-card">
             <div class="filter-group">
                 <div class="filter-item">
@@ -514,7 +553,7 @@
                         <i class="fas fa-search"></i>Search Orders
                     </label>
                     <input type="text" id="searchInput" class="form-control form-control-sm"
-                           placeholder="Search by order number or customer...">
+                           placeholder="Search by order number, customer, or notes...">
                 </div>
                 <div class="filter-item">
                     <label for="statusFilter">
@@ -559,11 +598,11 @@
             </div>
         </div>
 
-        <!-- Table Card -->
+        <!-- 📋 Table Card -->
         <div class="table-card">
             <div class="table-header">
                 <h3 class="table-title">
-                    <i class="fas fa-table me-2"></i>Orders List
+                    <i class="fas fa-table"></i>Orders List
                 </h3>
             </div>
 
@@ -597,14 +636,45 @@
                             {
                                 <tr data-status="@order.Status.ToLower()"
                                     data-type="@order.OrderType.ToString().ToLower()"
-                                    data-search="@order.OrderNumber.ToLower() @order.Notes?.ToLower()">
-                                    <td class="fw-semibold">@order.OrderNumber</td>
-                                    <td>@order.Notes?.Replace("Customer Name: ", "")</td>
-                                    <td>@order.OrderDate.ToString("MM/dd/yyyy HH:mm")</td>
+                                    data-search="@order.OrderNumber.ToLower() @order.Notes?.ToLower() @order.User?.UserName.ToLower()">
+                                    <td class="fw-semibold">
+                                        <i class="fas fa-hashtag me-1 text-muted"></i>@order.OrderNumber
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="fw-semibold">
+                                                @if (!string.IsNullOrEmpty(order.Notes) && order.Notes.Contains("Customer Name:"))
+                                                {
+                                                    @order.Notes.Replace("Customer Name: ", "")
+                                                }
+                                                else if (!string.IsNullOrEmpty(order.User?.UserName))
+                                                {
+                                                    @order.User.UserName
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">N/A</span>
+                                                }
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(order.User?.Email))
+                                            {
+                                                <div class="text-muted small">@order.User.Email</div>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <div>@order.OrderDate.ToString("MM/dd/yyyy")</div>
+                                            <div class="text-muted">@order.OrderDate.ToString("HH:mm")</div>
+                                        </div>
+                                    </td>
                                     <td>
                                         @if (order.EstimatedDeliveryTime.HasValue)
                                         {
-                                            @order.EstimatedDeliveryTime.Value.ToString("MM/dd/yyyy HH:mm")
+                                            <div class="small">
+                                                <div>@order.EstimatedDeliveryTime.Value.ToString("MM/dd/yyyy")</div>
+                                                <div class="text-muted">@order.EstimatedDeliveryTime.Value.ToString("HH:mm")</div>
+                                            </div>
                                         }
                                         else
                                         {
@@ -621,27 +691,46 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-light text-dark">@order.OrderType</span>
+                                        @{
+                                            var typeClass = order.OrderType.ToString().ToLower();
+                                        }
+                                        <span class="type-badge type-@typeClass">@order.OrderType</span>
                                     </td>
-                                    <td class="text-muted small">
-                                        @(order.DeliveryAddress ?? "-")
+                                    <td class="small">
+                                        @if (!string.IsNullOrEmpty(order.DeliveryAddress))
+                                        {
+                                            <div class="text-truncate" style="max-width: 150px;" title="@order.DeliveryAddress">
+                                                <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                                                @order.DeliveryAddress
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
                                     </td>
                                     <td>
-                                        <form asp-action="UpdateStatus" method="post" class="status-form">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="id" value="@order.Id" />
-                                            <select name="newStatus" class="status-select">
-                                                @foreach (var status in Enum.GetNames(typeof(RestaurantManagement.Models.OrderStatus)))
-                                                {
-                                                    <option value="@status" selected="@(order.Status == status)">
-                                                        @status
-                                                    </option>
-                                                }
-                                            </select>
-                                            <button type="submit" class="btn-action btn-update" title="Update Status">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                        </form>
+                                        <div class="action-buttons">
+                                            <a asp-action="Details" asp-route-id="@order.Id"
+                                               class="btn-action btn-details" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <form asp-action="UpdateStatus" method="post" class="status-form">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@order.Id" />
+                                                <select name="newStatus" class="status-select">
+                                                    @foreach (var status in Enum.GetNames(typeof(RestaurantManagement.Models.OrderStatus)))
+                                                    {
+                                                        <option value="@status" selected="@(order.Status == status)">
+                                                            @status
+                                                        </option>
+                                                    }
+                                                </select>
+                                                <button type="submit" class="btn-action btn-update" title="Update Status">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -690,6 +779,7 @@
 
 @section Scripts {
     <script>
+        // JavaScript code remains the same as in your original file
         let currentPage = 1;
         let itemsPerPage = 10;
         let allRows = [];

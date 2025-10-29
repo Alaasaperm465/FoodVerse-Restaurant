@@ -23,10 +23,12 @@ namespace RestaurantManagement.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()   //صفحة الاوردرات اللي هتظهر للادمن بس
+        public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
                 .Include(o => o.OrderItems)
+                .Include(o => o.User) // ✅ تضمين بيانات المستخدم
+                .Where(o => o.OrderItems.Any())
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
 
@@ -58,7 +60,7 @@ namespace RestaurantManagement.Controllers
 
             return View(viewModel);
         }
-        public async Task<IActionResult> Cart()     //صفحة الاوردرات اللي هتظهر لليوزر بس
+        public async Task<IActionResult> Cart()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -66,25 +68,39 @@ namespace RestaurantManagement.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // ✅ كل الطلبات النشطة (مش Completed ولا Cancelled)
+            // ✅ الحصول على الطلبات النشطة التي تحتوي على عناصر
             var activeOrders = await _context.Orders
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItem)
                 .Where(o => o.UserId == user.Id &&
                             o.Status != OrderStatus.Completed.ToString() &&
-                            o.Status != OrderStatus.Cancelled.ToString())
+                            o.Status != OrderStatus.Cancelled.ToString() &&
+                            o.OrderItems.Any()) // ✅ شرط إضافي: يجب أن تحتوي على عناصر
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
-            // لو مفيش ولا طلب
+            // ✅ حذف الطلبات الفارغة تلقائياً
+            var emptyOrders = await _context.Orders
+                .Include(o => o.OrderItems)
+                .Where(o => o.UserId == user.Id &&
+                            o.Status != OrderStatus.Completed.ToString() &&
+                            o.Status != OrderStatus.Cancelled.ToString() &&
+                            !o.OrderItems.Any()) // ✅ الطلبات التي لا تحتوي على عناصر
+                .ToListAsync();
+
+            if (emptyOrders.Any())
+            {
+                _context.Orders.RemoveRange(emptyOrders);
+                await _context.SaveChangesAsync();
+            }
+
             if (!activeOrders.Any())
                 return View("EmptyCart");
 
-            // ✅ احسب التوتال لكل طلب على حدة
+            // ✅ حساب الإجمالي لكل طلب
             foreach (var order in activeOrders)
             {
                 var total = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
-
                 var discountResult = ApplyDiscounts(total);
                 order.TotalPrice = discountResult.FinalTotal;
                 order.DiscountAmount = discountResult.DiscountAmount;
@@ -94,15 +110,14 @@ namespace RestaurantManagement.Controllers
             }
 
             await _context.SaveChangesAsync();
-
-            return View(activeOrders); // 👈 خليه يرجع List بدل Order واحد
+            return View(activeOrders);
         }
         public async Task<IActionResult> MyOrders()
         {
             var user = await _userManager.GetUserAsync(User);
 
             var myOrders = await _context.Orders
-                .Where(o => o.UserId == user.Id)
+                .Where(o => o.UserId == user.Id && o.OrderItems.Any()) // ✅ فقط الطلبات التي تحتوي على عناصر
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItem)
                 .OrderByDescending(o => o.OrderDate)
@@ -197,35 +212,81 @@ namespace RestaurantManagement.Controllers
         }
         public async Task<IActionResult> DecreaseQuantity(int id)
         {
-            var orderItem = await _context.OrderItems.FindAsync(id);
+            var orderItem = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .ThenInclude(o => o.OrderItems)
+                .FirstOrDefaultAsync(oi => oi.Id == id);
+
             if (orderItem != null)
             {
+                var order = orderItem.Order;
+
                 if (orderItem.Quantity > 1)
                 {
                     orderItem.Quantity--;
                     await _context.SaveChangesAsync();
+                    await UpdateOrderTotal(orderItem.OrderId);
                 }
                 else
                 {
                     _context.OrderItems.Remove(orderItem);
                     await _context.SaveChangesAsync();
+
+                    // ✅ تحقق إذا أصبح الطلب فارغاً
+                    var updatedOrder = await _context.Orders
+                        .Include(o => o.OrderItems)
+                        .FirstOrDefaultAsync(o => o.Id == order.Id);
+
+                    if (updatedOrder != null && !updatedOrder.OrderItems.Any())
+                    {
+                        _context.Orders.Remove(updatedOrder);
+                        await _context.SaveChangesAsync();
+                        TempData["InfoMessage"] = "Order removed as it became empty.";
+                        return RedirectToAction("Cart");
+                    }
+                    else
+                    {
+                        await UpdateOrderTotal(orderItem.OrderId);
+                    }
                 }
-                await UpdateOrderTotal(orderItem.OrderId);
             }
             return RedirectToAction("Cart");
         }
         public async Task<IActionResult> RemoveFromCart(int id)
         {
-            var orderItem = await _context.OrderItems.FindAsync(id);
+            var orderItem = await _context.OrderItems
+                .Include(oi => oi.Order)
+                .ThenInclude(o => o.OrderItems)
+                .FirstOrDefaultAsync(oi => oi.Id == id);
+
             if (orderItem != null)
             {
+                var order = orderItem.Order;
                 var orderId = orderItem.OrderId;
+
                 _context.OrderItems.Remove(orderItem);
                 await _context.SaveChangesAsync();
-                await UpdateOrderTotal(orderId);
+
+                // ✅ إذا كانت الطلب أصبح فارغاً بعد الحذف، احذف الطلب نفسه
+                var updatedOrder = await _context.Orders
+                    .Include(o => o.OrderItems)
+                    .FirstOrDefaultAsync(o => o.Id == orderId);
+
+                if (updatedOrder != null && !updatedOrder.OrderItems.Any())
+                {
+                    _context.Orders.Remove(updatedOrder);
+                    await _context.SaveChangesAsync();
+                    TempData["InfoMessage"] = "Order removed as it became empty.";
+                }
+                else
+                {
+                    await UpdateOrderTotal(orderId);
+                }
             }
+
             return RedirectToAction("Cart");
         }
+        [HttpGet]
         [HttpGet]
         public async Task<IActionResult> ConfirmOrder(int id, string customerName, string orderType, string? deliveryAddress)
         {
@@ -259,11 +320,14 @@ namespace RestaurantManagement.Controllers
                 return RedirectToAction("Cart");
             }
 
-            // ✅ تحديث بيانات الطلب
+            // ✅ تحديث بيانات الطلب مع حفظ اسم العميل
             order.Status = OrderStatus.Confirmed.ToString();
             order.OrderType = parsedOrderType;
             order.DeliveryAddress = parsedOrderType == OrderType.Delivery ? deliveryAddress : null;
             order.OrderDate = DateTime.Now;
+
+            // ✅ حفظ اسم العميل في الـ Notes
+            order.Notes = $"Customer Name: {customerName}";
 
             // حساب وقت التوصيل المتوقع لو الطلب Delivery
             if (parsedOrderType == OrderType.Delivery)
@@ -278,7 +342,7 @@ namespace RestaurantManagement.Controllers
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
 
-            TempData["InfoMessage"] = "Your order has been confirmed successfully!";
+            TempData["SuccessMessage"] = $"Your order has been confirmed successfully! Order #: {order.OrderNumber}";
             return RedirectToAction("OrderConfirmed");
         }
         private (decimal FinalTotal, decimal DiscountAmount, string DiscountDescription) ApplyDiscounts(decimal total)
@@ -321,12 +385,20 @@ namespace RestaurantManagement.Controllers
 
             if (order != null)
             {
-                order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+                // ✅ إذا لم يكن هناك عناصر، احذف الطلب
+                if (!order.OrderItems.Any())
+                {
+                    _context.Orders.Remove(order);
+                }
+                else
+                {
+                    order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+                }
                 await _context.SaveChangesAsync();
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteOrder(int id)
         {
             var user = await _userManager.GetUserAsync(User);
             var order = await _context.Orders

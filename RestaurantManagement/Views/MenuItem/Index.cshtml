@@ -519,14 +519,7 @@
                         <option value="unavailable">Unavailable Only</option>
                     </select>
                 </div>
-                <div class="filter-item">
-                    <label for="categoryFilter">
-                        <i class="fas fa-layer-group"></i>Category Filter
-                    </label>
-                    <select id="categoryFilter" class="form-control form-control-sm">
-                        <option value="all">All Categories</option>
-                    </select>
-                </div>
+                
                 <div class="filter-item">
                     <label for="itemsPerPage">
                         <i class="fas fa-list"></i>Items Per Page
@@ -572,15 +565,15 @@
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
-                                <th width="5%">#</th>
+                                <th width="3%">#</th>
                                 <th width="10%">Image</th>
                                 <th width="15%">Name</th>
-                                <th width="25%">Description</th>
+                                @* <th width="25%">Description</th> *@
                                 <th width="10%">Price</th>
                                 <th width="10%">Category</th>
-                                <th width="10%">Status</th>
-                                <th width="10%">Stock</th>
-                                <th width="15%">Actions</th>
+                                <th width="15%">Status</th>
+                                <th width="5%">Quantity</th>
+                                <th width="27%">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -607,7 +600,7 @@
                                         }
                                     </td>
                                     <td class="fw-semibold">@item.Name</td>
-                                    <td class="text-muted text-start">@(item.Description?.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</td>
+                                    @* <td class="text-muted text-start">@(item.Description?.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</td> *@
                                     <td>
                                         <span class="price-value">@item.Price.ToString("0.00")</span>
                                     </td>

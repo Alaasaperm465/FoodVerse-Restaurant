@@ -22,7 +22,7 @@
         }
         else
         {
-            @foreach (var order in Model)
+            @foreach (var order in Model.Where(o => o.OrderItems?.Any() == true)) // ✅ تأكيد أن الطلب يحتوي على عناصر
             {
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center bg-white">
@@ -42,9 +42,9 @@
                                         <th class="text-center">Price</th>
                                         <th class="text-center">Quantity</th>
                                         <th class="text-center">Subtotal</th>
-                                        @if (order.Status == "Pending" || order.Status == "Preparing" || order.Status == "Confirmed")
+                                        @if (order.Status == "Pending")
                                         {
-                                        <th class="text-center">Actions</th>
+                                            <th class="text-center">Actions</th>
                                         }
                                     </tr>
                                 </thead>
@@ -54,7 +54,7 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    @if (!string.IsNullOrEmpty(item.MenuItem.ImageUrl))
+                                                    @if (!string.IsNullOrEmpty(item.MenuItem?.ImageUrl))
                                                     {
                                                         <img src="@Url.Content(item.MenuItem.ImageUrl)"
                                                              alt="@item.MenuItem.Name"
@@ -70,8 +70,8 @@
                                                     }
 
                                                     <div>
-                                                        <div class="fw-semibold">@item.MenuItem.Name</div>
-                                                        <div class="text-muted small">@item.MenuItem.Description</div>
+                                                        <div class="fw-semibold">@item.MenuItem?.Name</div>
+                                                        <div class="text-muted small">@item.MenuItem?.Description</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -79,7 +79,7 @@
                                             <td class="text-center">@item.Quantity</td>
                                             <td class="text-center">$@((item.Quantity * item.UnitPrice).ToString("0.00"))</td>
                                             <td class="text-center">
-                                                @if (order.Status == "Pending" || order.Status == "Preparing" || order.Status == "Confirmed")
+                                                @if (order.Status == "Pending")
                                                 {
                                                     <a asp-action="RemoveFromCart"
                                                        asp-route-id="@item.Id"
@@ -150,7 +150,7 @@
                                         <span>@order.OrderItems.Sum(oi => oi.Quantity)</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <span class="fw-semibold">Total:</span>
+                                        <span class="fw-semibold">Total After Discount:</span>
                                         <span>$@order.TotalPrice.ToString("0.00")</span>
                                     </div>
                                 </div>

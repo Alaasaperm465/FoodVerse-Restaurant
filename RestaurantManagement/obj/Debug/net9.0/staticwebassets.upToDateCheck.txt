@@ -83,6 +83,7 @@ wwwroot\images\menu\c01da39e-0f84-4d23-9180-3052cd6c4cda.jpg
 wwwroot\images\menu\d7ebf24b-7d87-40b1-870b-c2d4d3310539.webp
 wwwroot\images\menu\ebaedcdc-fc1e-48c0-9e90-3545419976e9.webp
 wwwroot\images\menu\f23abf6b-dbd8-4155-8f25-e37e2c976279.webp
+wwwroot\images\menu\f2c9717c-2cf5-4643-9077-fca0414526d1.JPG
 wwwroot\images\res1.jpg
 wwwroot\images\res2.jpg
 wwwroot\images\res3.jpg

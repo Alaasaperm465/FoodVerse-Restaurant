@@ -326,7 +326,7 @@
                             <label asp-for="Name" class="form-label">
                                 <i class="fas fa-tag"></i>Category Name
                             </label>
-                            <input asp-for="Name" class="form-control" placeholder="e.g., Appetizers, Main Course, Desserts" />
+                            <input asp-for="Name" class="form-control" placeholder="e.g., Appetizers,Drinks, Desserts" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
 
@@ -343,7 +343,7 @@
                             <label asp-for="DisplayOrder" class="form-label">
                                 <i class="fas fa-sort-numeric-down"></i>Display Order
                             </label>
-                            <input asp-for="DisplayOrder" class="form-control" placeholder="1, 2, 3,e.g..." type="number" min="1" />
+                            <input asp-for="DisplayOrder" class="form-control" placeholder="Enter Display Order" type="number" min="1" />
                             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
                             <div class="form-helper">Lower numbers appear first in the menu</div>
                         </div>

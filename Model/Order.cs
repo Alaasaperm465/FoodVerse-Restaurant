@@ -53,5 +53,6 @@ namespace RestaurantManagement.Models
 
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
+        public bool HasItems => OrderItems?.Any() == true;
     }
 }

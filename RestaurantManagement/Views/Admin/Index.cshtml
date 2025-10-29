@@ -2,155 +2,552 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<section class="py-5 bg-light min-vh-100">
+<style>
+    .admin-dashboard {
+        background: linear-gradient(135deg, #f9f5f0 0%, #ffffff 100%);
+        min-height: calc(100vh - 80px);
+        padding: 40px 0;
+        margin-top: -30px;
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 0 20px;
+    }
+
+    .dashboard-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+        .dashboard-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+    .dashboard-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .stats-row {
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+    .stat-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 1.8rem;
+    }
+
+        .stat-icon.orders {
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+
+        .stat-icon.categories {
+            background: rgba(25, 135, 84, 0.1);
+            color: #198754;
+        }
+
+        .stat-icon.menu {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .stat-icon.users {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #666;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px 25px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        display: block;
+        color: var(--primary);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+        color: var(--primary-dark);
+    }
+
+    .feature-title {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .feature-description {
+        color: #666;
+        margin-bottom: 25px;
+        line-height: 1.5;
+        font-size: 0.95rem;
+    }
+
+    .btn-feature {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 25px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 200px;
+    }
+
+        .btn-feature:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(197, 45, 47, 0.3);
+            color: white;
+        }
+
+    .btn-categories {
+        background: linear-gradient(135deg, #198754, #157347);
+    }
+
+    .btn-menu {
+        background: linear-gradient(135deg, #ffc107, #e0a800);
+        color: var(--dark) !important;
+    }
+
+    .btn-orders {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    }
+
+    .btn-users {
+        background: linear-gradient(135deg, #fd7e14, #e5670c);
+    }
+
+    .btn-categories:hover {
+        background: linear-gradient(135deg, #157347, #116434);
+        color: white !important;
+    }
+
+    .btn-menu:hover {
+        background: linear-gradient(135deg, #e0a800, #c69500);
+        color: var(--dark) !important;
+    }
+
+    .btn-orders:hover {
+        background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+        color: white !important;
+    }
+
+    .btn-users:hover {
+        background: linear-gradient(135deg, #e5670c, #d45c0a);
+        color: white !important;
+    }
+
+    .logout-section {
+        text-align: center;
+        margin-top: 50px;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-logout {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 40px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+            color: white;
+        }
+
+    .welcome-banner {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+        }
+
+    .welcome-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-subtitle {
+        opacity: 0.9;
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .quick-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .quick-action-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    @@media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 2rem;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+        }
+
+        .feature-card {
+            padding: 25px 20px;
+        }
+
+        .quick-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .quick-action-btn {
+            width: 200px;
+            text-align: center;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .dashboard-title {
+            font-size: 1.8rem;
+        }
+
+        .welcome-title {
+            font-size: 1.6rem;
+        }
+
+        .stat-card, .feature-card {
+            padding: 20px 15px;
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stat-card, .feature-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(4) {
+            animation-delay: 0.5s;
+        }
+</style>
+
+<section class="admin-dashboard">
     <div class="container">
-        <!-- Welcome Banner -->
-        <div class="text-center bg-primary text-white rounded-4 p-4 mb-5 shadow-sm">
-            <h1 class="fw-bold">Welcome Back, Admin 👋</h1>
-            <p class="opacity-75 mb-3">Manage your restaurant efficiently with your admin dashboard</p>
-            <div class="d-flex justify-content-center flex-wrap gap-2">
-                <a href="#" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-graph-up me-2"></i>View Reports
+        <div class="welcome-banner">
+            <h1 class="welcome-title">Welcome Back, Admin! 👋</h1>
+            <p class="welcome-subtitle">Manage your restaurant efficiently with our powerful dashboard</p>
+            <div class="quick-actions">
+                <a href="#" class="quick-action-btn">
+                    <i class="fas fa-chart-line me-2"></i>View Reports
                 </a>
-                <a href="#" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-bell me-2"></i>Notifications
+                <a href="#" class="quick-action-btn">
+                    <i class="fas fa-bell me-2"></i>Notifications
                 </a>
-                <a href="#" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-gear me-2"></i>Settings
+                <a href="#" class="quick-action-btn">
+                    <i class="fas fa-cog me-2"></i>Settings
                 </a>
             </div>
         </div>
 
-        <!-- Stats -->
-        <div class="row text-center mb-5">
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-3" style="width:70px;height:70px;">
-                            <i class="bi bi-receipt fs-3"></i>
+        <div class="stats-row">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-receipt"></i>
                         </div>
-                        <h2 class="fw-bold">156</h2>
-                        <p class="text-muted mb-0">Total Orders</p>
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Total Orders</div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-success bg-opacity-10 text-success d-inline-flex align-items-center justify-content-center mb-3" style="width:70px;height:70px;">
-                            <i class="bi bi-grid-1x2 fs-3"></i>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon categories">
+                            <i class="fas fa-layer-group"></i>
                         </div>
-                        <h2 class="fw-bold">12</h2>
-                        <p class="text-muted mb-0">Categories</p>
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Categories</div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-inline-flex align-items-center justify-content-center mb-3" style="width:70px;height:70px;">
-                            <i class="bi bi-egg-fried fs-3"></i>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon menu">
+                            <i class="fas fa-utensils"></i>
                         </div>
-                        <h2 class="fw-bold">45</h2>
-                        <p class="text-muted mb-0">Menu Items</p>
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Menu Items</div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-danger bg-opacity-10 text-danger d-inline-flex align-items-center justify-content-center mb-3" style="width:70px;height:70px;">
-                            <i class="bi bi-people fs-3"></i>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon users">
+                            <i class="fas fa-users"></i>
                         </div>
-                        <h2 class="fw-bold">89</h2>
-                        <p class="text-muted mb-0">Active Users</p>
+                        <div class="stat-number">89</div>
+                        <div class="stat-label">Active Users</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Dashboard Header -->
-        <div class="text-center mb-5">
-            <h2 class="fw-bold text-primary">Admin Dashboard</h2>
-            <p class="text-muted">Manage all aspects of your restaurant from one centralized location</p>
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Admin Dashboard</h1>
+            <p class="dashboard-subtitle">Manage all aspects of your restaurant from one centralized location</p>
         </div>
 
-        <!-- Features -->
         <div class="row">
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 shadow-sm border-0 text-center">
-                    <div class="card-body">
-                        <i class="bi bi-grid-1x2-fill text-success fs-1 mb-3"></i>
-                        <h5 class="fw-bold">Categories</h5>
-                        <p class="text-muted small mb-3">Organize your menu with categories and subcategories.</p>
-                        <a asp-controller="Category" asp-action="Index" class="btn btn-success w-100">
-                            <i class="bi bi-sliders me-2"></i>Manage
-                        </a>
-                    </div>
+                <div class="feature-card">
+                    <i class="fas fa-layer-group feature-icon"></i>
+                    <h3 class="feature-title">Categories</h3>
+                    <p class="feature-description">Organize your menu with categories and subcategories for better navigation</p>
+                    <a asp-controller="Category" asp-action="Index" class="btn-feature btn-categories">
+                        <i class="fas fa-cog me-2"></i>Manage
+                    </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 shadow-sm border-0 text-center">
-                    <div class="card-body">
-                        <i class="bi bi-egg-fried text-warning fs-1 mb-3"></i>
-                        <h5 class="fw-bold">Menu Items</h5>
-                        <p class="text-muted small mb-3">Add, edit, and manage your restaurant's dishes.</p>
-                        <a asp-controller="MenuItem" asp-action="Index" class="btn btn-warning w-100 text-dark fw-semibold">
-                            <i class="bi bi-pencil-square me-2"></i>Manage
-                        </a>
-                    </div>
+                <div class="feature-card">
+                    <i class="fas fa-utensils feature-icon"></i>
+                    <h3 class="feature-title">Menu Items</h3>
+                    <p class="feature-description">Add, edit, and manage your restaurant's delicious menu offerings</p>
+                    <a asp-controller="MenuItem" asp-action="Index" class="btn-feature btn-menu">
+                        <i class="fas fa-edit me-2"></i>Manage
+                    </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 shadow-sm border-0 text-center">
-                    <div class="card-body">
-                        <i class="bi bi-cart-check-fill text-primary fs-1 mb-3"></i>
-                        <h5 class="fw-bold">Orders</h5>
-                        <p class="text-muted small mb-3">Track and manage customer orders in real-time.</p>
-                        <a asp-controller="Order" asp-action="Index" class="btn btn-primary w-100">
-                            <i class="bi bi-eye me-2"></i>View Orders
-                        </a>
-                    </div>
+                <div class="feature-card">
+                    <i class="fas fa-shopping-cart feature-icon"></i>
+                    <h3 class="feature-title">Orders</h3>
+                    <p class="feature-description">Track, manage, and fulfill customer orders in real-time</p>
+                    <a asp-controller="Order" asp-action="Index" class="btn-feature btn-orders">
+                        <i class="fas fa-eye me-2"></i>View Orders
+                    </a>
                 </div>
             </div>
 
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 shadow-sm border-0 text-center">
-                    <div class="card-body">
-                        <i class="bi bi-person-badge-fill text-danger fs-1 mb-3"></i>
-                        <h5 class="fw-bold">Users</h5>
-                        <p class="text-muted small mb-3">Manage user accounts and assign admin roles.</p>
-                        <a asp-controller="Account" asp-action="addAdmin" class="btn btn-danger w-100">
-                            <i class="bi bi-person-plus me-2"></i>Add Admin
-                        </a>
-                    </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-shield feature-icon"></i>
+                    <h3 class="feature-title">Users</h3>
+                    <p class="feature-description">Manage user accounts and assign administrator privileges</p>
+                    <a asp-controller="Account" asp-action="addAdmin" class="btn-feature btn-users">
+                        <i class="fas fa-user-plus me-2"></i>Add Admin
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Logout Section -->
-        <div class="text-center bg-white shadow-sm rounded-4 p-4 mt-5">
-            <h5 class="text-muted mb-3">Session Management</h5>
-            <a asp-controller="Account" asp-action="Logout" class="btn btn-danger px-4 py-2 fw-semibold">
-                <i class="bi bi-box-arrow-right me-2"></i>Logout from Dashboard
+        <div class="logout-section">
+            <h4 class="mb-3" style="color: #666;">Session Management</h4>
+            <a asp-controller="Account" asp-action="Logout" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>Logout from Dashboard
             </a>
         </div>
     </div>
 </section>
 
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll(".card h2").forEach(stat => {
-                const target = parseInt(stat.textContent);
-                let count = 0;
-                const interval = setInterval(() => {
-                    stat.textContent = ++count;
-                    if (count >= target) clearInterval(interval);
-                }, 20);
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            const target = parseInt(stat.textContent);
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    stat.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    stat.textContent = Math.floor(current);
+                }
+            }, 30);
+        });
+
+        const cards = document.querySelectorAll('.feature-card, .stat-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
             });
         });
-    </script>
-}
+    });
+</script>

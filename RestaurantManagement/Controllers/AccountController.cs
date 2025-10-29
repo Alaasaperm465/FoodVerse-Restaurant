@@ -73,7 +73,7 @@ namespace RestaurantManagement.Controllers
                         };
                         await _signInManager.SignInWithClaimsAsync(appUser, isPersistent: model.RememberMe, claims);
                         //await _signInManager.SignInAsync(appUser, isPersistent: model.RememberMe);
-                        return RedirectToAction("Index", "Category");
+                        return RedirectToAction("Index", "Order");
                     }
                 }
                 ModelState.AddModelError("", "UserName Or Password is Wrong"); 
